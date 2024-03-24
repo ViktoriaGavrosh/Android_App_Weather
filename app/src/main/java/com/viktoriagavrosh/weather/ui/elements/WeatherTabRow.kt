@@ -12,10 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.ui.theme.Blue100
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -34,8 +32,7 @@ fun WeatherTabRow(
             selectedTabIndex = tabIndex,
             modifier = Modifier
                 .clip(RoundedCornerShape(dimensionResource(id = R.dimen.corner_size))),
-            containerColor = Blue100,
-            contentColor = Color.White
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ) {
             tabList.forEachIndexed { index, text ->
                 Tab(

@@ -11,13 +11,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherCondition
-import com.viktoriagavrosh.weather.ui.theme.Blue100
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
@@ -79,7 +76,7 @@ fun CurrentWeatherColumn(
                 .height(dimensionResource(id = R.dimen.button_height))
                 .padding(dimensionResource(id = R.dimen.padding_large)),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Blue100
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
             )
         ) {
             Image(
@@ -97,11 +94,7 @@ fun DetailRow(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = Blue100,
-            contentColor = Color.White
-        )
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
