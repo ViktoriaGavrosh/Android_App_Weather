@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class WeatherCondition (
+class WeatherCondition(
     @SerialName(value = "text") val condition: String = "",
     private val icon: String = ""
 ) {

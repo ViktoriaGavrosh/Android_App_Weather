@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="now">now</string>
+    <string name="forecast">forecast</string>
+    <string name="feels_like">Feels like:</string>
+    <string name="wind">Wind:</string>
+    <string name="precipitation">Precipitation:</string>
+    <string name="details">Details</string>
+    <string name="pressure">Pressure:</string>
 </resources>

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DayAstro (
+data class DayAstro(
     @SerialName(value = "sunrise") val sunriseTime: String = "",
     @SerialName(value = "sunset") val sunsetTime: String = "",
     @SerialName(value = "moonrise") val moonriseTime: String = "",

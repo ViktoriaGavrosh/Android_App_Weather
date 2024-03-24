@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Hour (     // попроб наследов от CurrentWeather
+data class Hour(     // попроб наследов от CurrentWeather
     val time: String,
     @SerialName(value = "condition") val weatherCondition: WeatherCondition = WeatherCondition(),
     @SerialName(value = "temp_c") val tempC: Double = 0.0,

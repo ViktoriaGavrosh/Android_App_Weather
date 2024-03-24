@@ -9,7 +9,7 @@ interface AppContainer {
     val weatherRepository: WeatherRepository
 }
 
-class DefaultAppContainer: AppContainer {
+class DefaultAppContainer : AppContainer {
 
     private val baseUrl = "https://api.weatherapi.com"
 
@@ -18,7 +18,7 @@ class DefaultAppContainer: AppContainer {
     private val retrofit = Retrofit
         .Builder()
         .addConverterFactory(
-                json.asConverterFactory("application/json".toMediaType())
+            json.asConverterFactory("application/json".toMediaType())
         )
         .baseUrl(baseUrl)
         .build()
