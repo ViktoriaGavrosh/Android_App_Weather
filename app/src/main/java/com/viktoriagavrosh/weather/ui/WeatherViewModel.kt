@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.weather.WeatherApplication
 import com.viktoriagavrosh.weather.data.WeatherRepository
+import com.viktoriagavrosh.weather.model.Wallpaper
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +19,9 @@ class WeatherViewModel(
 ) : ViewModel() {
     private var _uiState = MutableStateFlow(WeatherInfo())
     val uiState = _uiState.asStateFlow()
+
+    private var _settingsState = MutableStateFlow(SettingsState())    // потом заменить на DataStore
+    val settingsState = _settingsState.asStateFlow()
 
     init {
         getWeatherInfo(city = "Minsk")
@@ -43,3 +47,9 @@ class WeatherViewModel(
         }
     }
 }
+
+data class SettingsState(
+    val isMusic: Boolean = true,
+    val isCelsius: Boolean = true,
+    val wallpaper: Wallpaper = Wallpaper.DAY
+)

@@ -16,13 +16,16 @@ import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.ui.elements.CurrentWeatherColumn
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
+import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CurrentWeatherScreen(
+    city: String,
     weather: CurrentWeather,
     onDetailsClick: () -> Unit,
+    onCityClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val tabList = listOf(
@@ -35,26 +38,33 @@ fun CurrentWeatherScreen(
     )
     Column(
         modifier = modifier
-            .padding(dimensionResource(id = R.dimen.padding_small))
     ) {
-        WeatherTabRow(
-            tabList = tabList,
-            pagerState = pagerState
+        WeatherTopBar(
+            text = city,
+            onCityClick = onCityClick
         )
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.weight(1F)
-        ) { index ->
-            if (index == 0) {
-                CurrentWeatherColumn(
-                    weather = weather,
-                    onDetailsClick = onDetailsClick,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(dimensionResource(id = R.dimen.padding_small))
-                )
-            } else {
-                Text(text = "\u2103")
+        Column(
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+        ) {
+            WeatherTabRow(
+                tabList = tabList,
+                pagerState = pagerState
+            )
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.weight(1F)
+            ) { index ->
+                if (index == 0) {
+                    CurrentWeatherColumn(
+                        weather = weather,
+                        onDetailsClick = onDetailsClick,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = dimensionResource(id = R.dimen.padding_small))
+                    )
+                } else {
+                    Text(text = "\u2103")
+                }
             }
         }
     }
@@ -65,8 +75,10 @@ fun CurrentWeatherScreen(
 fun CurrentWeatherScreenPreview() {
     WeatherTheme {
         CurrentWeatherScreen(
+            city = "City",
             weather = CurrentWeather(),
-            onDetailsClick = { }
+            onDetailsClick = { },
+            onCityClick = {}
         )
     }
 }
