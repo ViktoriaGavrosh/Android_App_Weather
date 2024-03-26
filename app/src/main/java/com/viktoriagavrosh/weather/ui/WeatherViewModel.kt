@@ -12,16 +12,14 @@ import com.viktoriagavrosh.weather.model.Wallpaper
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(
     private val weatherRepository: WeatherRepository
 ) : ViewModel() {
-    private var _uiState = MutableStateFlow(WeatherInfo())
+    private var _uiState = MutableStateFlow(WeatherState())
     val uiState = _uiState.asStateFlow()
-
-    private var _settingsState = MutableStateFlow(SettingsState())    // потом заменить на DataStore
-    val settingsState = _settingsState.asStateFlow()
 
     init {
         getWeatherInfo(city = "Minsk")
@@ -33,7 +31,51 @@ class WeatherViewModel(
 
     private fun getWeatherInfo(city: String) {
         viewModelScope.launch {
-            _uiState.value = weatherRepository.getWeatherInfo(city)
+            _uiState.update {
+                it.copy(
+                    weatherInfo = weatherRepository.getWeatherInfo(city)
+                )
+            }
+        }
+    }
+
+    fun changeMusic() {
+        viewModelScope.launch {
+            val settings = _uiState.value.settings
+            _uiState.update {
+                it.copy(
+                    settings = settings.copy(
+                        isMusic = !settings.isMusic
+                    )
+                )
+            }
+        }
+    }
+
+    fun changeCelsius(temp: String) {
+        val isCelsius = temp == "℃"
+        val settings = _uiState.value.settings
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    settings = settings.copy(
+                        isCelsius = isCelsius
+                    )
+                )
+            }
+        }
+    }
+
+    fun changeWallpaper(title: String) {
+        viewModelScope.launch {
+            val settings = _uiState.value.settings
+            _uiState.update {
+                it.copy(
+                    settings = settings.copy(
+                        wallpaper = Wallpaper.valueOf(title)
+                    )
+                )
+            }
         }
     }
 
@@ -48,7 +90,12 @@ class WeatherViewModel(
     }
 }
 
-data class SettingsState(
+data class WeatherState(
+    val weatherInfo: WeatherInfo = WeatherInfo(),
+    val settings: Settings = Settings()
+)
+
+data class Settings(
     val isMusic: Boolean = true,
     val isCelsius: Boolean = true,
     val wallpaper: Wallpaper = Wallpaper.DAY

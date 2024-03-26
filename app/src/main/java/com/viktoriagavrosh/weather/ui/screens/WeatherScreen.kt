@@ -3,26 +3,22 @@ package com.viktoriagavrosh.weather.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
-import com.viktoriagavrosh.weather.ui.SettingsState
-import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
+import com.viktoriagavrosh.weather.ui.WeatherState
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
 fun WeatherScreen(
-    weatherInfo: WeatherInfo,
-    settings: SettingsState,
+    uiState: WeatherState,
+    onMusicClick: () -> Unit,
+    onCelsiusClick: (String) -> Unit,
+    onWallpaperClick: (String) -> Unit,
     onCityClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -37,20 +33,24 @@ fun WeatherScreen(
     Column(
         modifier = modifier
     ) {
-/*
+
         CurrentWeatherScreen(
-            city = weatherInfo.location.cityName,
-            weather = weatherInfo.currentWeather,
+            weatherInfo = uiState.weatherInfo,
             onDetailsClick = { /*TODO*/ },
             onCityClick = onCityClick,
             modifier = Modifier
                 .fillMaxSize()
         )
 
- */
-        SettingsScreen(
-            settings = settings
-        )
+        /*
+               SettingsScreen(
+                   settings = uiState.settings,
+                   onMusicClick = onMusicClick,
+                   onCelsiusClick = onCelsiusClick,
+                   onWallpaperClick = onWallpaperClick
+               )
+
+        */
     }
 }
 
@@ -59,9 +59,11 @@ fun WeatherScreen(
 fun WeatherScreenPreview() {
     WeatherTheme {
         WeatherScreen(
-            weatherInfo = WeatherInfo(),
-            settings = SettingsState(),
-            onCityClick = {}
+            uiState = WeatherState(),
+            onMusicClick = {},
+            onCelsiusClick = {},
+            onCityClick = {},
+            onWallpaperClick = {}
         )
     }
 }

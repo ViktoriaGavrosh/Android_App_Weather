@@ -11,4 +11,8 @@
     <string name="music">Music</string>
     <string name="temp_c">℃</string>
     <string name="temp_f">℉</string>
+    <string name="music_on">Music on</string>
+    <string name="wallpaper">Wallpaper</string>
+    <string name="temperature">Temperature</string>
+    <string name="back">Back</string>
 </resources>

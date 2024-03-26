@@ -37,7 +37,13 @@ fun WeatherCard(
             Text(
                 text = condition,
                 style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_large))
+                modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_large))
+            )
+            Text(
+                text = "${temp.toInt()} ℃",
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.displayLarge,
+                modifier = Modifier
             )
             AsyncImage(
                 model = ImageRequest
@@ -47,13 +53,10 @@ fun WeatherCard(
                 contentDescription = condition,
                 error = painterResource(id = R.drawable.ic_broken_image),
                 placeholder = painterResource(id = R.drawable.ic_broken_image),
-                modifier = Modifier.size(dimensionResource(id = R.dimen.image_size))
-            )
-            Text(
-                text = "${temp.toInt()} ℃",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.displayLarge,
-                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large))
+                modifier = Modifier
+                    .padding(bottom = dimensionResource(id = R.dimen.padding_medium))
+                    .size(dimensionResource(id = R.dimen.image_size))
+
             )
         }
     }

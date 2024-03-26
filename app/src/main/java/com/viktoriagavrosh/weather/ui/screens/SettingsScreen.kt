@@ -5,8 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
@@ -16,34 +21,58 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.ui.SettingsState
+import com.viktoriagavrosh.weather.model.Wallpaper
+import com.viktoriagavrosh.weather.ui.Settings
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
 fun SettingsScreen(
-    settings: SettingsState,
+    settings: Settings,
+    onMusicClick: () -> Unit,
+    onCelsiusClick: (String) -> Unit,
+    onWallpaperClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val listTemp = listOf(
+        stringResource(R.string.temp_c),
+        stringResource(R.string.temp_f)
+    )
     Column(
         modifier = modifier
     ) {
         WeatherTopBar(
             text = stringResource(R.string.settings),
+            isBack = false,
+            isTitleClickable = false,
             onCityClick = {}
         )
         Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
+            modifier = Modifier
+                .padding(dimensionResource(id = R.dimen.padding_small))
+                .verticalScroll(rememberScrollState())
         ) {
             MusicCard(
                 text = stringResource(R.string.music),
                 isMusic = settings.isMusic,
+                onMusicClick = onMusicClick,
                 modifier = Modifier.fillMaxWidth()
             )
-            TempRadioButton(
-                isCelsius = settings.isCelsius,
+            SettingsRadioButton(
+                title = stringResource(R.string.temperature),
+                listText = listTemp,
+                selectedButton = if (settings.isCelsius) listTemp[0] else listTemp[1],
+                onButtonClick = onCelsiusClick,
+                modifier = Modifier.fillMaxWidth()
+            )
+            SettingsRadioButton(
+                title = stringResource(id = R.string.wallpaper),
+                listText = Wallpaper.entries.map { it.name },
+                selectedButton = settings.wallpaper.name,
+                onButtonClick = onWallpaperClick,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -54,9 +83,9 @@ fun SettingsScreen(
 private fun MusicCard(
     text: String,
     isMusic: Boolean,
+    onMusicClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    //val
     Card(
         modifier = modifier
     ) {
@@ -74,43 +103,59 @@ private fun MusicCard(
             )
             Switch(
                 checked = isMusic,
-                onCheckedChange = {}
+                onCheckedChange = { onMusicClick.invoke() },
+                thumbContent = {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = stringResource(R.string.music_on)
+                    )
+                }
             )
         }
     }
 }
 
 @Composable
-private fun TempRadioButton(
-    isCelsius: Boolean,
+private fun SettingsRadioButton(
+    title: String,
+    listText: List<String>,
+    selectedButton: String,
+    onButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val listTemp = listOf(
-        stringResource(R.string.temp_c),
-        stringResource(R.string.temp_f)
-    )
-    val selectedTemp = if (isCelsius) listTemp[0] else listTemp[1]
     Card(
         modifier = modifier
             .padding(top = dimensionResource(id = R.dimen.padding_small))
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = dimensionResource(id = R.dimen.padding_small))
         ) {
-            listTemp.forEach { item ->
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+            listText.forEach { item ->
                 Row(
-                    modifier = Modifier.selectable(
-                        selected = item == selectedTemp,
-                        onClick = {}
-                    )
+                    modifier = Modifier
+                        .selectable(
+                            selected = item == selectedButton,
+                            onClick = { onButtonClick(item) }
+                        )
+                        .fillMaxWidth()
+                        .padding(dimensionResource(id = R.dimen.padding_small)),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = item == selectedTemp,
-                        onClick = {}
+                        selected = item == selectedButton,
+                        onClick = { onButtonClick(item) }
                     )
                     Text(
                         text = item,
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleSmall
                     )
                 }
             }
@@ -118,12 +163,16 @@ private fun TempRadioButton(
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun SettingsScreenPreview() {
     WeatherTheme {
         SettingsScreen(
-            settings = SettingsState()
+            settings = Settings(),
+            onMusicClick = {},
+            onCelsiusClick = {},
+            onWallpaperClick = {}
         )
     }
 }

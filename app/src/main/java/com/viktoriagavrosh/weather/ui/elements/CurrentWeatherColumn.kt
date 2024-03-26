@@ -33,7 +33,7 @@ fun CurrentWeatherColumn(
 ) {
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WeatherCard(
             condition = weather.weatherCondition.condition,
