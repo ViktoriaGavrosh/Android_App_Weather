@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class WeatherCondition(
+data class WeatherCondition(
     @SerialName(value = "text") val condition: String = "",
     private val icon: String = ""
 ) {
-    val iconUri = "https://$icon"
+    val iconUri = "https:$icon"
 }

@@ -33,7 +33,7 @@ fun WeatherScreen(
     Column(
         modifier = modifier
     ) {
-
+        /*
         CurrentWeatherScreen(
             weatherInfo = uiState.weatherInfo,
             onDetailsClick = { /*TODO*/ },
@@ -42,6 +42,7 @@ fun WeatherScreen(
                 .fillMaxSize()
         )
 
+         */
         /*
                SettingsScreen(
                    settings = uiState.settings,
@@ -51,6 +52,13 @@ fun WeatherScreen(
                )
 
         */
+        ForecastScreen(
+            weatherInfo = uiState.weatherInfo,
+            onCityClick = { /*TODO*/ },
+            onDetailsClick = { /*TODO*/ },
+            modifier = Modifier
+                .fillMaxSize()
+        )
     }
 }
 

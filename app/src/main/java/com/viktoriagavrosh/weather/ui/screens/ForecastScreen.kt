@@ -6,34 +6,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
-import com.viktoriagavrosh.weather.ui.elements.CurrentWeatherColumn
+import com.viktoriagavrosh.weather.ui.elements.ForecastScreenContent
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CurrentWeatherScreen(
+fun ForecastScreen(
     weatherInfo: WeatherInfo,
-    onDetailsClick: () -> Unit,
     onCityClick: () -> Unit,
+    onDetailsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val tabList = listOf(
-        stringResource(id = R.string.now),
-        stringResource(id = R.string.forecast)
-    )
+    val tabList = try {
+        List(3) { weatherInfo.forecast.days[it].date.substringAfter("-").replace("-", "/") }
+    } catch (e: IndexOutOfBoundsException) {
+        List(3) { "$it" }
+    }
     val pagerState = rememberPagerState(
         pageCount = { tabList.size },
         initialPage = 0
@@ -43,7 +40,6 @@ fun CurrentWeatherScreen(
     ) {
         WeatherTopBar(
             text = weatherInfo.location.cityName,
-            isBack = false,
             onCityClick = onCityClick
         )
         Column(
@@ -57,23 +53,15 @@ fun CurrentWeatherScreen(
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+                    .padding(top = dimensionResource(id = R.dimen.padding_small)),
+                verticalAlignment = Alignment.Bottom
             ) { index ->
-                if (index == 0) {
-                    CurrentWeatherColumn(
-                        weather = weatherInfo.currentWeather,
-                        onDetailsClick = onDetailsClick,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = dimensionResource(id = R.dimen.padding_small))
-                    )
-                } else {
-                    val w: Weather = weatherInfo.forecast.days[0].dayWeather
-                    Column {
-                        Text(text = weatherInfo.forecast.days[0].dayWeather.weatherCondition.iconUri)
-                        Text(text = w.weatherCondition.iconUri)
-                    }
-                }
+                ForecastScreenContent(
+                    day = weatherInfo.forecast.days[index],
+                    onDetailsClick = onDetailsClick,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }
@@ -81,12 +69,12 @@ fun CurrentWeatherScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun CurrentWeatherScreenPreview() {
+fun ForecastScreenPreview() {
     WeatherTheme {
-        CurrentWeatherScreen(
+        ForecastScreen(
             weatherInfo = WeatherInfo(),
-            onDetailsClick = { },
-            onCityClick = {}
+            onCityClick = {},
+            onDetailsClick = {}
         )
     }
 }

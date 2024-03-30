@@ -1,24 +1,26 @@
 package com.viktoriagavrosh.weather.ui.elements
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
@@ -31,6 +33,13 @@ fun CurrentWeatherColumn(
     onDetailsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val details = listOf(
+        stringResource(id = R.string.feels_like, weather.feelsLikeTempC.toInt()),
+        stringResource(id = R.string.wind, weather.windSpeedKm.toInt()),
+        stringResource(id = R.string.precipitation, weather.precipitationMm),
+        stringResource(id = R.string.humidity, weather.humidity.toInt()),
+        stringResource(id = R.string.pressure, weather.pressureMm.toInt())
+    )
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,76 +48,77 @@ fun CurrentWeatherColumn(
             condition = weather.weatherCondition.condition,
             iconUri = weather.weatherCondition.iconUri,
             temp = weather.tempC,
+            paddingValues = PaddingValues(dimensionResource(id = R.dimen.padding_medium)),
             modifier = Modifier.fillMaxWidth()
         )
-        DetailRow(
-            title = stringResource(R.string.feels_like),
-            value = "${weather.feelsLikeTempC.toInt()} ℃",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = dimensionResource(id = R.dimen.padding_small))
-        )
-        DetailRow(
-            title = stringResource(id = R.string.wind),
-            value = "${weather.windSpeedKm.toInt()} km/h",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = dimensionResource(id = R.dimen.padding_small))
-        )
-        DetailRow(
-            title = stringResource(R.string.precipitation),
-            value = "${weather.precipitationMm} mm",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = dimensionResource(id = R.dimen.padding_small))
-        )
-        DetailRow(
-            title = stringResource(R.string.pressure),
-            value = "${weather.pressureMm.toInt()} mmHg",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = dimensionResource(id = R.dimen.padding_small))
-        )
-        Button(
-            onClick = { onDetailsClick() },
-            modifier = Modifier
-                .width(dimensionResource(id = R.dimen.button_width))
-                .height(dimensionResource(id = R.dimen.button_height))
-                .padding(dimensionResource(id = R.dimen.padding_large)),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_arrow_down),
-                contentDescription = stringResource(id = R.string.details)
+        details.forEach {
+            DetailRow(
+                title = it,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = dimensionResource(id = R.dimen.padding_small))
             )
         }
+        DetailButton(
+            onDetailsClick = onDetailsClick,
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+        )
+    }
+}
+
+@Composable
+fun DetailButton(
+    modifier: Modifier = Modifier,
+    onDetailsClick: () -> Unit,
+    isWhiteBorder: Boolean = false
+) {
+    OutlinedButton(
+        onClick = { onDetailsClick() },
+        modifier = modifier
+            .width(dimensionResource(id = R.dimen.button_width))
+            .height(dimensionResource(id = R.dimen.button_height)),
+        border = BorderStroke(
+            width = dimensionResource(id = R.dimen.button_border_width),
+            color = if (isWhiteBorder) {
+                MaterialTheme.colorScheme.onPrimary
+            } else {
+                MaterialTheme.colorScheme.surfaceVariant
+            }
+        )
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_arrow_down),
+            contentDescription = stringResource(id = R.string.details),
+            colorFilter = ColorFilter.tint(
+                if (isWhiteBorder) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                }
+            ),
+            modifier = Modifier.size(dimensionResource(id = R.dimen.button_icon_size))
+        )
     }
 }
 
 @Composable
 fun DetailRow(
     title: String,
-    value: String,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "$title $value",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
                     vertical = dimensionResource(id = R.dimen.padding_medium)
                 )
-            )
-        }
+        )
     }
 }
 
