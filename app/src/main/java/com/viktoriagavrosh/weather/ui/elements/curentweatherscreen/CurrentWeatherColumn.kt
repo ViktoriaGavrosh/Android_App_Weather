@@ -1,30 +1,24 @@
-package com.viktoriagavrosh.weather.ui.elements
+package com.viktoriagavrosh.weather.ui.elements.curentweatherscreen
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherCondition
+import com.viktoriagavrosh.weather.ui.elements.DetailButton
+import com.viktoriagavrosh.weather.ui.elements.WeatherCard
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
@@ -67,42 +61,7 @@ fun CurrentWeatherColumn(
 }
 
 @Composable
-fun DetailButton(
-    modifier: Modifier = Modifier,
-    onDetailsClick: () -> Unit,
-    isWhiteBorder: Boolean = false
-) {
-    OutlinedButton(
-        onClick = { onDetailsClick() },
-        modifier = modifier
-            .width(dimensionResource(id = R.dimen.button_width))
-            .height(dimensionResource(id = R.dimen.button_height)),
-        border = BorderStroke(
-            width = dimensionResource(id = R.dimen.button_border_width),
-            color = if (isWhiteBorder) {
-                MaterialTheme.colorScheme.onPrimary
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            }
-        )
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_arrow_down),
-            contentDescription = stringResource(id = R.string.details),
-            colorFilter = ColorFilter.tint(
-                if (isWhiteBorder) {
-                    MaterialTheme.colorScheme.onPrimary
-                } else {
-                    MaterialTheme.colorScheme.surfaceVariant
-                }
-            ),
-            modifier = Modifier.size(dimensionResource(id = R.dimen.button_icon_size))
-        )
-    }
-}
-
-@Composable
-fun DetailRow(
+private fun DetailRow(
     title: String,
     modifier: Modifier = Modifier
 ) {

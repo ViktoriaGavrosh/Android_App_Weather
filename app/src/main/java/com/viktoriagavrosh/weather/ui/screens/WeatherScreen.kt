@@ -33,16 +33,21 @@ fun WeatherScreen(
     Column(
         modifier = modifier
     ) {
-        /*
-        CurrentWeatherScreen(
+/*
+        TabScreen(        // CurrentWeatherScreen
             weatherInfo = uiState.weatherInfo,
+            tabList = listOf(
+                stringResource(id = R.string.now),
+                stringResource(id = R.string.forecast)
+            ),
             onDetailsClick = { /*TODO*/ },
             onCityClick = onCityClick,
+            isBack = false,
             modifier = Modifier
                 .fillMaxSize()
         )
 
-         */
+ */
         /*
                SettingsScreen(
                    settings = uiState.settings,
@@ -52,10 +57,21 @@ fun WeatherScreen(
                )
 
         */
-        ForecastScreen(
+
+        TabScreen(                //ForecastScreen
             weatherInfo = uiState.weatherInfo,
-            onCityClick = { /*TODO*/ },
+            tabList = try {
+                List(3) {
+                    uiState.weatherInfo.forecast.days[it].date
+                        .substringAfter("-")
+                        .replace("-", "/")
+                }
+            } catch (e: IndexOutOfBoundsException) {
+                List(3) { "$it" }
+            },
             onDetailsClick = { /*TODO*/ },
+            onCityClick = { /*TODO*/ },
+            isBack = true,
             modifier = Modifier
                 .fillMaxSize()
         )

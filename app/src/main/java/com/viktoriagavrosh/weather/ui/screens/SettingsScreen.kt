@@ -46,7 +46,7 @@ fun SettingsScreen(
     ) {
         WeatherTopBar(
             text = stringResource(R.string.settings),
-            isBack = false,
+            isBack = true,
             isTitleClickable = false,
             onCityClick = {}
         )

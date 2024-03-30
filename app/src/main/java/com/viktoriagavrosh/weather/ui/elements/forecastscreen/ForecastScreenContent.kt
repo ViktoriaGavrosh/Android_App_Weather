@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.weather.ui.elements
+package com.viktoriagavrosh.weather.ui.elements.forecastscreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +31,8 @@ import com.viktoriagavrosh.weather.model.apimodel.Day
 import com.viktoriagavrosh.weather.model.apimodel.DayWeather
 import com.viktoriagavrosh.weather.model.apimodel.Hour
 import com.viktoriagavrosh.weather.model.apimodel.Weather
+import com.viktoriagavrosh.weather.ui.elements.DetailButton
+import com.viktoriagavrosh.weather.ui.elements.WeatherCard
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
@@ -73,13 +75,19 @@ fun ForecastScreenContent(
 }
 
 @Composable
-fun DayCard(
+private fun DayCard(
     modifier: Modifier = Modifier,
     dateTime: String,
     weather: Weather,
     isDay: Boolean,
     onDetailsClick: () -> Unit
 ) {
+    val details = listOf(
+        stringResource(id = R.string.wind, weather.windSpeedKm.toInt()),
+        stringResource(id = R.string.precipitation, weather.precipitationMm),
+        stringResource(R.string.humidity, weather.humidity.toInt())
+    )
+
     Card(
         modifier = modifier
     ) {
@@ -98,18 +106,12 @@ fun DayCard(
                 temp = weather.tempC,
                 isTransparentBackground = true
             )
-            Text(
-                text = stringResource(id = R.string.wind, weather.windSpeedKm.toInt()),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Text(
-                text = stringResource(id = R.string.precipitation, weather.precipitationMm),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Text(
-                text = stringResource(R.string.humidity, weather.humidity.toInt()),
-                style = MaterialTheme.typography.titleLarge
-            )
+            details.forEach {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
             if (isDay) {
                 DetailButton(
                     onDetailsClick = onDetailsClick,
@@ -121,7 +123,7 @@ fun DayCard(
 }
 
 @Composable
-fun HoursRow(
+private fun HoursRow(
     hours: List<Hour>,
     onHourClick: (Weather) -> Unit,
     modifier: Modifier = Modifier
@@ -143,7 +145,7 @@ fun HoursRow(
 }
 
 @Composable
-fun HourCard(
+private fun HourCard(
     hour: Hour,
     onHourClick: (Weather) -> Unit,
     modifier: Modifier = Modifier
