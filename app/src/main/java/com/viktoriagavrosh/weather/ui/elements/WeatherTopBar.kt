@@ -25,7 +25,7 @@ fun WeatherTopBar(
     text: String,
     isBack: Boolean = true,
     isTitleClickable: Boolean = true,
-    onCityClick: () -> Unit
+    onCityClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         title = {

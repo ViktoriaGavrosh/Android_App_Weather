@@ -57,24 +57,39 @@ fun WeatherScreen(
                )
 
         */
+        /*
+                TabScreen(                //ForecastScreen
+                    weatherInfo = uiState.weatherInfo,
+                    tabList = try {
+                        List(3) {
+                            uiState.weatherInfo.forecast.days[it].date
+                                .substringAfter("-")
+                                .replace("-", "/")
+                        }
+                    } catch (e: IndexOutOfBoundsException) {
+                        List(3) { "$it" }
+                    },
+                    onDetailsClick = { /*TODO*/ },
+                    onCityClick = { /*TODO*/ },
+                    isBack = true,
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
 
-        TabScreen(                //ForecastScreen
-            weatherInfo = uiState.weatherInfo,
-            tabList = try {
-                List(3) {
-                    uiState.weatherInfo.forecast.days[it].date
-                        .substringAfter("-")
-                        .replace("-", "/")
-                }
-            } catch (e: IndexOutOfBoundsException) {
-                List(3) { "$it" }
-            },
-            onDetailsClick = { /*TODO*/ },
-            onCityClick = { /*TODO*/ },
-            isBack = true,
-            modifier = Modifier
-                .fillMaxSize()
+         */
+        /*
+                DetailsScreen(    // Current
+                    weatherDetails = uiState.weatherInfo.currentWeather
+                )
+
+         */
+
+        DetailsScreen(    // Day
+            weatherDetails = uiState.weatherInfo.forecast.days[0].dayWeather,
+            data = uiState.weatherInfo.forecast.days[0].date,
+            dayAstro = uiState.weatherInfo.forecast.days[0].dayAstro
         )
+
     }
 }
 
