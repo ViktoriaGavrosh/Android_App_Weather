@@ -1,108 +1,113 @@
 package com.viktoriagavrosh.weather.ui.screens
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.ui.WeatherState
-import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
+import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
+import com.viktoriagavrosh.weather.model.apimodel.DayWeather
+import com.viktoriagavrosh.weather.ui.WeatherViewModel
+import com.viktoriagavrosh.weather.ui.util.Screen
 
 @Composable
 fun WeatherScreen(
-    uiState: WeatherState,
-    onMusicClick: () -> Unit,
-    onCelsiusClick: (String) -> Unit,
-    onWallpaperClick: (String) -> Unit,
-    onCityClick: () -> Unit,
-    modifier: Modifier = Modifier
+    viewModel: WeatherViewModel = viewModel(factory = WeatherViewModel.Factory),
+    navController: NavHostController = rememberNavController()
 ) {
-    Image(
-        painter = painterResource(id = R.drawable.weather_bg),
-        contentDescription = null,
-        modifier = Modifier
-            .fillMaxSize()
-            .alpha(0.5F),
-        contentScale = ContentScale.FillBounds
+    val uiState by viewModel.uiState.collectAsState()
+
+    /*
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val selectedScreen = Screen.valueOf(
+        backStackEntry?.destination?.route ?: Screen.CurrentWeather.name
     )
-    Column(
-        modifier = modifier
+     */
+    // TODO add onBackClick = { navController.navigateUp() }
+    NavHost(
+        navController = navController,
+        startDestination = Screen.CurrentWeather.name
     ) {
-/*
-        TabScreen(        // CurrentWeatherScreen
-            weatherInfo = uiState.weatherInfo,
-            tabList = listOf(
-                stringResource(id = R.string.now),
-                stringResource(id = R.string.forecast)
-            ),
-            onDetailsClick = { /*TODO*/ },
-            onCityClick = onCityClick,
-            isBack = false,
-            modifier = Modifier
-                .fillMaxSize()
-        )
+        composable(route = Screen.CurrentWeather.name) {
+            TabScreen(
+                weatherInfo = uiState.weatherInfo,
+                tabList = listOf(
+                    stringResource(id = R.string.now),
+                    stringResource(id = R.string.forecast)
+                ),
+                onDetailsClick = { weather ->                           // TODO add logic provide Weather
+                    viewModel.selectWeather(weather = weather)
+                    navController.navigate(Screen.Details.name)
+                },
+                onCityClick = { TODO() },
+                isBack = false,
+                onForecastClick = { day ->
+                    viewModel.selectDay(day)
+                    navController.navigate(Screen.Forecast.name)
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
+        composable(route = Screen.Forecast.name) {
+            TabScreen(
+                weatherInfo = uiState.weatherInfo,
+                selectedDay = uiState.selectedDay,
+                tabList = try {
+                    List(3) {
+                        uiState.weatherInfo.forecast.days[it].date
+                            .substringAfter("-")
+                            .replace("-", "/")
+                    }
+                } catch (e: IndexOutOfBoundsException) {
+                    List(3) { "$it" }
+                },
+                onDetailsClick = { weather ->                             // TODO add logic provide Weather
+                    viewModel.selectWeather(weather = weather)
+                    navController.navigate(Screen.Details.name)
+                },
+                onCityClick = { TODO() },
+                isBack = true,
+                onBackClick = { navController.navigate(Screen.CurrentWeather.name) },
+                onTabClick = viewModel::selectDayByDate,
+                modifier = Modifier
+                    .fillMaxSize()
+            )
+        }
+        composable(route = Screen.Details.name) {
+            when (uiState.selectedWeather) {
+                is CurrentWeather -> {
+                    DetailsScreen(
+                        weatherDetails = uiState.weatherInfo.currentWeather,
+                        onBackClick = { navController.navigateUp() }
+                    )
+                }
 
- */
-        /*
-               SettingsScreen(
-                   settings = uiState.settings,
-                   onMusicClick = onMusicClick,
-                   onCelsiusClick = onCelsiusClick,
-                   onWallpaperClick = onWallpaperClick
-               )
-
-        */
-        /*
-                TabScreen(                //ForecastScreen
-                    weatherInfo = uiState.weatherInfo,
-                    tabList = try {
-                        List(3) {
-                            uiState.weatherInfo.forecast.days[it].date
-                                .substringAfter("-")
-                                .replace("-", "/")
-                        }
-                    } catch (e: IndexOutOfBoundsException) {
-                        List(3) { "$it" }
-                    },
-                    onDetailsClick = { /*TODO*/ },
-                    onCityClick = { /*TODO*/ },
-                    isBack = true,
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-
-         */
-        /*
-                DetailsScreen(    // Current
-                    weatherDetails = uiState.weatherInfo.currentWeather
-                )
-
-         */
-
-        DetailsScreen(    // Day
-            weatherDetails = uiState.weatherInfo.forecast.days[0].dayWeather,
-            data = uiState.weatherInfo.forecast.days[0].date,
-            dayAstro = uiState.weatherInfo.forecast.days[0].dayAstro
-        )
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun WeatherScreenPreview() {
-    WeatherTheme {
-        WeatherScreen(
-            uiState = WeatherState(),
-            onMusicClick = {},
-            onCelsiusClick = {},
-            onCityClick = {},
-            onWallpaperClick = {}
-        )
+                is DayWeather -> {
+                    DetailsScreen(
+                        weatherDetails = uiState.selectedWeather,
+                        data = uiState.selectedDay.date,
+                        dayAstro = uiState.selectedDay.dayAstro,
+                        onBackClick = { navController.navigateUp() }
+                    )
+                }
+            }
+        }
+        composable(route = Screen.Settings.name) {
+            SettingsScreen(
+                settings = uiState.settings,
+                onMusicClick = viewModel::changeMusic,
+                onCelsiusClick = viewModel::changeCelsius,
+                onWallpaperClick = viewModel::changeWallpaper,
+                onBackClick = { navController.navigateUp() }
+            )
+        }
     }
 }

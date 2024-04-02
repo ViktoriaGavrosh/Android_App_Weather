@@ -18,6 +18,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
+import com.viktoriagavrosh.weather.model.apimodel.Day
+import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.elements.curentweatherscreen.CurrentWeatherPager
@@ -28,16 +30,25 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TabScreen(
+    modifier: Modifier = Modifier,
     weatherInfo: WeatherInfo,
+    selectedDay: Day = Day(),
     tabList: List<String>,
-    onDetailsClick: () -> Unit,
+    onDetailsClick: (Weather) -> Unit,
     onCityClick: () -> Unit,
     isBack: Boolean,
-    modifier: Modifier = Modifier
+    onBackClick: () -> Unit = {},
+    onForecastClick: (Day) -> Unit = {},
+    onTabClick: (String) -> Unit = {}
 ) {
+    val selectedDayIndex = tabList.indexOf(
+        selectedDay.date
+            .substringAfter("-")
+            .replace("-", "/")
+    )
     val pagerState = rememberPagerState(
         pageCount = { tabList.size },
-        initialPage = 0
+        initialPage = if (selectedDayIndex != -1) selectedDayIndex else 0
     )
     Column(
         modifier = modifier,
@@ -45,7 +56,8 @@ fun TabScreen(
         WeatherTopBar(
             text = weatherInfo.location.cityName,
             isBack = isBack,
-            onCityClick = onCityClick
+            onCityClick = onCityClick,
+            onBackClick = onBackClick
         )
         Column(
             modifier = Modifier
@@ -53,7 +65,9 @@ fun TabScreen(
         ) {
             WeatherTabRow(
                 tabList = tabList,
-                pagerState = pagerState
+                pagerState = pagerState,
+                isForecast = isBack,
+                onTabClick = onTabClick
             )
             if (isBack) {
                 ForecastPager(
@@ -68,7 +82,8 @@ fun TabScreen(
                 CurrentWeatherPager(
                     weatherInfo = weatherInfo,
                     onDetailsClick = onDetailsClick,
-                    state = pagerState
+                    state = pagerState,
+                    onForecastClick = onForecastClick
                 )
             }
         }
@@ -78,9 +93,11 @@ fun TabScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun WeatherTabRow(
+    modifier: Modifier = Modifier,
     tabList: List<String>,
     pagerState: PagerState,
-    modifier: Modifier = Modifier
+    isForecast: Boolean,
+    onTabClick: (String) -> Unit = {}
 ) {
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
@@ -98,6 +115,7 @@ private fun WeatherTabRow(
                     selected = false,
                     onClick = {
                         coroutineScope.launch {
+                            if (isForecast) onTabClick(text)
                             pagerState.animateScrollToPage(index)
                         }
                     },

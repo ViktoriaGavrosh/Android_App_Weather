@@ -38,7 +38,8 @@ fun DetailsScreen(
     modifier: Modifier = Modifier,
     weatherDetails: Weather,
     data: String = "",
-    dayAstro: DayAstro = DayAstro()
+    dayAstro: DayAstro = DayAstro(),
+    onBackClick: () -> Unit = {}
 ) {
     var isCurrentDay = true
     val windList = mutableListOf(
@@ -72,7 +73,8 @@ fun DetailsScreen(
         WeatherTopBar(
             text = if (isCurrentDay) stringResource(id = R.string.now) else data,
             isBack = true,
-            isTitleClickable = false
+            isTitleClickable = false,
+            onBackClick = onBackClick
         )
         Column(
             modifier = Modifier
@@ -288,7 +290,8 @@ private fun AstroDetailRow(
 fun DetailsScreenPreview() {
     WeatherTheme {
         DetailsScreen(
-            weatherDetails = DayWeather()
+            weatherDetails = DayWeather(),
+            onBackClick = {}
         )
     }
 }

@@ -1,22 +1,35 @@
 package com.viktoriagavrosh.weather.ui
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.ui.screens.WeatherScreen
+import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
-fun WeatherApp(
-    viewModel: WeatherViewModel = viewModel(factory = WeatherViewModel.Factory)
-) {
-    val uiState by viewModel.uiState.collectAsState()
+fun WeatherApp() {
     // Image morning sky, night sky...
-    WeatherScreen(
-        uiState = uiState,
-        onMusicClick = viewModel::changeMusic,
-        onCelsiusClick = viewModel::changeCelsius,
-        onCityClick = {},
-        onWallpaperClick = viewModel::changeWallpaper
+    Image(
+        painter = painterResource(id = R.drawable.weather_bg),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxSize()
+            .alpha(0.5F),
+        contentScale = ContentScale.FillBounds
     )
+    WeatherScreen()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WeatherAppPreview() {
+    WeatherTheme {
+        WeatherApp()
+    }
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
+import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherCondition
 import com.viktoriagavrosh.weather.ui.elements.DetailButton
 import com.viktoriagavrosh.weather.ui.elements.WeatherCard
@@ -24,7 +25,7 @@ import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 @Composable
 fun CurrentWeatherColumn(
     weather: CurrentWeather,
-    onDetailsClick: () -> Unit,
+    onDetailsClick: (Weather) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val details = listOf(
@@ -55,6 +56,7 @@ fun CurrentWeatherColumn(
         }
         DetailButton(
             onDetailsClick = onDetailsClick,
+            weather = weather,
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
         )
     }

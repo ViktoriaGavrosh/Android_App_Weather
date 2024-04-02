@@ -8,13 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.viktoriagavrosh.weather.model.apimodel.Day
+import com.viktoriagavrosh.weather.model.apimodel.Weather
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ForecastPager(
     days: List<Day>,
     state: PagerState,
-    onDetailsClick: () -> Unit,
+    onDetailsClick: (Weather) -> Unit,
     modifier: Modifier = Modifier
 ) {
     HorizontalPager(

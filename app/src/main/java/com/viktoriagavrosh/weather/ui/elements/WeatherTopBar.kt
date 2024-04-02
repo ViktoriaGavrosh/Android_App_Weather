@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -25,7 +26,8 @@ fun WeatherTopBar(
     text: String,
     isBack: Boolean = true,
     isTitleClickable: Boolean = true,
-    onCityClick: () -> Unit = {}
+    onCityClick: () -> Unit = {},
+    onBackClick: () -> Unit = {}
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -46,13 +48,17 @@ fun WeatherTopBar(
         ),
         navigationIcon = {
             if (isBack) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(R.string.back),
-                    modifier = Modifier
-                        .padding(start = dimensionResource(id = R.dimen.padding_small))
-                        .size(dimensionResource(id = R.dimen.top_bar_icon_size))
-                )
+                IconButton(
+                    onClick = { onBackClick() }
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = stringResource(R.string.back),
+                        modifier = Modifier
+                            .padding(start = dimensionResource(id = R.dimen.padding_small))
+                            .size(dimensionResource(id = R.dimen.top_bar_icon_size))
+                    )
+                }
             }
         }
     )

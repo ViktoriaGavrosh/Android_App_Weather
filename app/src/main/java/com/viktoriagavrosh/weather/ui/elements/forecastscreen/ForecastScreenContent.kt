@@ -38,7 +38,7 @@ import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 @Composable
 fun ForecastScreenContent(
     day: Day,
-    onDetailsClick: () -> Unit,
+    onDetailsClick: (Weather) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var weather by remember {
@@ -80,7 +80,7 @@ private fun DayCard(
     dateTime: String,
     weather: Weather,
     isDay: Boolean,
-    onDetailsClick: () -> Unit
+    onDetailsClick: (Weather) -> Unit
 ) {
     val details = listOf(
         stringResource(id = R.string.wind, weather.windSpeedKm.toInt()),
@@ -115,6 +115,7 @@ private fun DayCard(
             if (isDay) {
                 DetailButton(
                     onDetailsClick = onDetailsClick,
+                    weather = weather,
                     isWhiteBorder = true
                 )
             }

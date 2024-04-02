@@ -35,6 +35,7 @@ fun SettingsScreen(
     onMusicClick: () -> Unit,
     onCelsiusClick: (String) -> Unit,
     onWallpaperClick: (String) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listTemp = listOf(
@@ -48,7 +49,8 @@ fun SettingsScreen(
             text = stringResource(R.string.settings),
             isBack = true,
             isTitleClickable = false,
-            onCityClick = {}
+            onCityClick = {},
+            onBackClick = onBackClick
         )
         Column(
             modifier = Modifier
@@ -172,7 +174,8 @@ fun SettingsScreenPreview() {
             settings = Settings(),
             onMusicClick = {},
             onCelsiusClick = {},
-            onWallpaperClick = {}
+            onWallpaperClick = {},
+            onBackClick = {}
         )
     }
 }
