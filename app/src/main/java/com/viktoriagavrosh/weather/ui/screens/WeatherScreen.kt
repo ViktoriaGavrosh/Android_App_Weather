@@ -52,6 +52,9 @@ fun WeatherScreen(
                     viewModel.selectDay(day)
                     navController.navigate(Screen.Forecast.name)
                 },
+                onSettingsClick = {
+                    navController.navigate(Screen.Settings.name)
+                },
                 modifier = Modifier
                     .fillMaxSize()
             )
@@ -77,6 +80,9 @@ fun WeatherScreen(
                 isBack = true,
                 onBackClick = { navController.navigate(Screen.CurrentWeather.name) },
                 onTabClick = viewModel::selectDayByDate,
+                onSettingsClick = {
+                    navController.navigate(Screen.Settings.name)
+                },
                 modifier = Modifier
                     .fillMaxSize()
             )
@@ -86,7 +92,10 @@ fun WeatherScreen(
                 is CurrentWeather -> {
                     DetailsScreen(
                         weatherDetails = uiState.weatherInfo.currentWeather,
-                        onBackClick = { navController.navigateUp() }
+                        onBackClick = { navController.navigateUp() },
+                        onSettingsClick = {
+                            navController.navigate(Screen.Settings.name)
+                        }
                     )
                 }
 
@@ -95,7 +104,10 @@ fun WeatherScreen(
                         weatherDetails = uiState.selectedWeather,
                         data = uiState.selectedDay.date,
                         dayAstro = uiState.selectedDay.dayAstro,
-                        onBackClick = { navController.navigateUp() }
+                        onBackClick = { navController.navigateUp() },
+                        onSettingsClick = {
+                            navController.navigate(Screen.Settings.name)
+                        }
                     )
                 }
             }

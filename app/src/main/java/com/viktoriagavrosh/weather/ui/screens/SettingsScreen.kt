@@ -50,7 +50,9 @@ fun SettingsScreen(
             isBack = true,
             isTitleClickable = false,
             onCityClick = {},
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            isSettings = true,
+            onSettingsClick = {}
         )
         Column(
             modifier = Modifier

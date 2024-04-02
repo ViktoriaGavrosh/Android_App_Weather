@@ -39,7 +39,8 @@ fun TabScreen(
     isBack: Boolean,
     onBackClick: () -> Unit = {},
     onForecastClick: (Day) -> Unit = {},
-    onTabClick: (String) -> Unit = {}
+    onTabClick: (String) -> Unit = {},
+    onSettingsClick: () -> Unit
 ) {
     val selectedDayIndex = tabList.indexOf(
         selectedDay.date
@@ -57,7 +58,8 @@ fun TabScreen(
             text = weatherInfo.location.cityName,
             isBack = isBack,
             onCityClick = onCityClick,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onSettingsClick = onSettingsClick
         )
         Column(
             modifier = Modifier
@@ -141,7 +143,8 @@ fun TabScreenPreview() {
             tabList = listOf("1", "2"),
             onDetailsClick = { /*TODO*/ },
             onCityClick = { /*TODO*/ },
-            isBack = false
+            isBack = false,
+            onSettingsClick = {}
         )
     }
 }

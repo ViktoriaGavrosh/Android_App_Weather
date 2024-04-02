@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.weather.ui.elements
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,7 +28,9 @@ fun WeatherTopBar(
     isBack: Boolean = true,
     isTitleClickable: Boolean = true,
     onCityClick: () -> Unit = {},
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    isSettings: Boolean = false,
+    onSettingsClick: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -60,6 +63,18 @@ fun WeatherTopBar(
                     )
                 }
             }
+        },
+        actions = {
+            if (!isSettings) {
+                IconButton(
+                    onClick = onSettingsClick
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_settings),
+                        contentDescription = stringResource(id = R.string.settings)
+                    )
+                }
+            }
         }
     )
 }
@@ -70,7 +85,8 @@ fun WeatherTopBarPreview() {
     WeatherTheme {
         WeatherTopBar(
             text = "City",
-            onCityClick = {}
+            onCityClick = {},
+            onSettingsClick = {}
         )
     }
 }

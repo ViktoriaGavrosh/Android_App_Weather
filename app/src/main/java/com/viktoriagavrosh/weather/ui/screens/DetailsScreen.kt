@@ -39,6 +39,7 @@ fun DetailsScreen(
     weatherDetails: Weather,
     data: String = "",
     dayAstro: DayAstro = DayAstro(),
+    onSettingsClick: () -> Unit,
     onBackClick: () -> Unit = {}
 ) {
     var isCurrentDay = true
@@ -74,7 +75,8 @@ fun DetailsScreen(
             text = if (isCurrentDay) stringResource(id = R.string.now) else data,
             isBack = true,
             isTitleClickable = false,
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onSettingsClick = onSettingsClick
         )
         Column(
             modifier = Modifier
@@ -279,8 +281,7 @@ private fun AstroDetailRow(
         Text(
             text = text,
             style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-            //modifier = Modifier.fillMaxWidth()
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -291,7 +292,8 @@ fun DetailsScreenPreview() {
     WeatherTheme {
         DetailsScreen(
             weatherDetails = DayWeather(),
-            onBackClick = {}
+            onBackClick = {},
+            onSettingsClick = {}
         )
     }
 }
