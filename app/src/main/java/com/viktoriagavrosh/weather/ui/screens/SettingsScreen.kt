@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.Wallpaper
 import com.viktoriagavrosh.weather.ui.Settings
-import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
@@ -35,7 +34,6 @@ fun SettingsScreen(
     onMusicClick: () -> Unit,
     onCelsiusClick: (String) -> Unit,
     onWallpaperClick: (String) -> Unit,
-    onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val listTemp = listOf(
@@ -44,42 +42,29 @@ fun SettingsScreen(
     )
     Column(
         modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_small))
+            .verticalScroll(rememberScrollState())
     ) {
-        WeatherTopBar(
-            text = stringResource(R.string.settings),
-            isBack = true,
-            isTitleClickable = false,
-            onCityClick = {},
-            onBackClick = onBackClick,
-            isSettings = true,
-            onSettingsClick = {}
+        MusicCard(
+            text = stringResource(R.string.music),
+            isMusic = settings.isMusic,
+            onMusicClick = onMusicClick,
+            modifier = Modifier.fillMaxWidth()
         )
-        Column(
-            modifier = Modifier
-                .padding(dimensionResource(id = R.dimen.padding_small))
-                .verticalScroll(rememberScrollState())
-        ) {
-            MusicCard(
-                text = stringResource(R.string.music),
-                isMusic = settings.isMusic,
-                onMusicClick = onMusicClick,
-                modifier = Modifier.fillMaxWidth()
-            )
-            SettingsRadioButton(
-                title = stringResource(R.string.temperature),
-                listText = listTemp,
-                selectedButton = if (settings.isCelsius) listTemp[0] else listTemp[1],
-                onButtonClick = onCelsiusClick,
-                modifier = Modifier.fillMaxWidth()
-            )
-            SettingsRadioButton(
-                title = stringResource(id = R.string.wallpaper),
-                listText = Wallpaper.entries.map { it.name },
-                selectedButton = settings.wallpaper.name,
-                onButtonClick = onWallpaperClick,
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        SettingsRadioButton(
+            title = stringResource(R.string.temperature),
+            listText = listTemp,
+            selectedButton = if (settings.isCelsius) listTemp[0] else listTemp[1],
+            onButtonClick = onCelsiusClick,
+            modifier = Modifier.fillMaxWidth()
+        )
+        SettingsRadioButton(
+            title = stringResource(id = R.string.wallpaper),
+            listText = Wallpaper.entries.map { it.name },
+            selectedButton = settings.wallpaper.name,
+            onButtonClick = onWallpaperClick,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -176,8 +161,7 @@ fun SettingsScreenPreview() {
             settings = Settings(),
             onMusicClick = {},
             onCelsiusClick = {},
-            onWallpaperClick = {},
-            onBackClick = {}
+            onWallpaperClick = {}
         )
     }
 }

@@ -19,25 +19,39 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
+import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
+import com.viktoriagavrosh.weather.ui.WeatherState
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
+import com.viktoriagavrosh.weather.ui.util.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherTopBar(
-    text: String,
-    isBack: Boolean = true,
-    isTitleClickable: Boolean = true,
+    selectedScreen: Screen,
+    weatherState: WeatherState,
     onCityClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
-    isSettings: Boolean = false,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit = {}
 ) {
+    val text = when(selectedScreen) {
+        Screen.CurrentWeather,
+        Screen.Forecast -> weatherState.weatherInfo.location.cityName
+        Screen.Settings -> stringResource(id = R.string.settings)
+        Screen.Details -> {
+            if (weatherState.selectedWeather is CurrentWeather) {
+                stringResource(id = R.string.now)
+            } else {
+                weatherState.selectedDay.date
+            }
+        }
+    }
     CenterAlignedTopAppBar(
         title = {
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = if (isTitleClickable) {
+                modifier = if (selectedScreen != Screen.CurrentWeather
+                    && selectedScreen != Screen.Settings ) {
                     Modifier.clickable {
                         onCityClick()
                     }
@@ -50,7 +64,7 @@ fun WeatherTopBar(
             titleContentColor = Color.White
         ),
         navigationIcon = {
-            if (isBack) {
+            if (selectedScreen != Screen.CurrentWeather) {
                 IconButton(
                     onClick = { onBackClick() }
                 ) {
@@ -65,7 +79,7 @@ fun WeatherTopBar(
             }
         },
         actions = {
-            if (!isSettings) {
+            if (selectedScreen != Screen.Settings) {
                 IconButton(
                     onClick = onSettingsClick
                 ) {
@@ -84,9 +98,8 @@ fun WeatherTopBar(
 fun WeatherTopBarPreview() {
     WeatherTheme {
         WeatherTopBar(
-            text = "City",
-            onCityClick = {},
-            onSettingsClick = {}
+            selectedScreen = Screen.CurrentWeather,
+            weatherState = WeatherState()
         )
     }
 }

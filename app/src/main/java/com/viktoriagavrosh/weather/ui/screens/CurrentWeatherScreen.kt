@@ -14,7 +14,6 @@ import com.viktoriagavrosh.weather.model.apimodel.Day
 import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
-import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.elements.curentweatherscreen.CurrentWeatherPager
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
@@ -24,11 +23,8 @@ fun CurrentWeatherScreen(
     modifier: Modifier = Modifier,
     weatherInfo: WeatherInfo,
     onDetailsClick: (Weather) -> Unit,
-    onCityClick: () -> Unit,
-    onBackClick: () -> Unit = {},
     onForecastClick: (Day) -> Unit = {},
-    onTabClick: (String) -> Unit = {},
-    onSettingsClick: () -> Unit
+    onTabClick: (String) -> Unit = {}
 ) {
     val tabList = listOf(
         stringResource(id = R.string.now),
@@ -39,32 +35,22 @@ fun CurrentWeatherScreen(
         initialPage = 0
     )
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_small)),
     ) {
-        WeatherTopBar(
-            text = weatherInfo.location.cityName,
-            isBack = false,
-            onCityClick = onCityClick,
-            onBackClick = onBackClick,
-            onSettingsClick = onSettingsClick
+        WeatherTabRow(
+            tabList = tabList,
+            pagerState = pagerState,
+            onTabClick = onTabClick
         )
-        Column(
-            modifier = Modifier
-                .padding(dimensionResource(id = R.dimen.padding_small)),
-        ) {
-            WeatherTabRow(
-                tabList = tabList,
-                pagerState = pagerState,
-                onTabClick = onTabClick
-            )
-            CurrentWeatherPager(
-                weatherInfo = weatherInfo,
-                onDetailsClick = onDetailsClick,
-                state = pagerState,
-                onForecastClick = onForecastClick
-            )
-        }
+        CurrentWeatherPager(
+            weatherInfo = weatherInfo,
+            onDetailsClick = onDetailsClick,
+            state = pagerState,
+            onForecastClick = onForecastClick
+        )
     }
+
 }
 
 @Preview(showBackground = true)
@@ -73,9 +59,7 @@ fun CurrentWeatherScreenPreview() {
     WeatherTheme {
         CurrentWeatherScreen(
             weatherInfo = WeatherInfo(),
-            onDetailsClick = { /*TODO*/ },
-            onCityClick = { /*TODO*/ },
-            onSettingsClick = {}
+            onDetailsClick = { /*TODO*/ }
         )
     }
 }

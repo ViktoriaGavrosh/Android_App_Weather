@@ -30,17 +30,13 @@ import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.model.apimodel.DayAstro
 import com.viktoriagavrosh.weather.model.apimodel.DayWeather
 import com.viktoriagavrosh.weather.model.apimodel.Weather
-import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
     weatherDetails: Weather,
-    data: String = "",
-    dayAstro: DayAstro = DayAstro(),
-    onSettingsClick: () -> Unit,
-    onBackClick: () -> Unit = {}
+    dayAstro: DayAstro = DayAstro()
 ) {
     var isCurrentDay = true
     val windList = mutableListOf(
@@ -69,49 +65,39 @@ fun DetailsScreen(
         }
     }
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_small))
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
     ) {
-        WeatherTopBar(
-            text = if (isCurrentDay) stringResource(id = R.string.now) else data,
-            isBack = true,
-            isTitleClickable = false,
-            onBackClick = onBackClick,
-            onSettingsClick = onSettingsClick
+        MainCard(
+            condition = weatherDetails.weatherCondition.condition,
+            iconUri = weatherDetails.weatherCondition.iconUri,
+            temp = weatherDetails.tempC
         )
-        Column(
-            modifier = Modifier
-                .padding(dimensionResource(id = R.dimen.padding_small))
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
-        ) {
-            MainCard(
-                condition = weatherDetails.weatherCondition.condition,
-                iconUri = weatherDetails.weatherCondition.iconUri,
-                temp = weatherDetails.tempC
-            )
-            if (isCurrentDay) {
-                DetailsCard(
-                    detailsList = listOf(
-                        stringResource(
-                            id = R.string.feels_like,
-                            (weatherDetails as CurrentWeather).feelsLikeTempC.toInt()
-                        )
-                    ), modifier = Modifier.fillMaxWidth()
-                )
-            }
+        if (isCurrentDay) {
             DetailsCard(
-                detailsList = windList, modifier = Modifier.fillMaxWidth()
+                detailsList = listOf(
+                    stringResource(
+                        id = R.string.feels_like,
+                        (weatherDetails as CurrentWeather).feelsLikeTempC.toInt()
+                    )
+                ), modifier = Modifier.fillMaxWidth()
             )
-            DetailsCard(
-                detailsList = detailsList, modifier = Modifier.fillMaxWidth()
+        }
+        DetailsCard(
+            detailsList = windList, modifier = Modifier.fillMaxWidth()
+        )
+        DetailsCard(
+            detailsList = detailsList, modifier = Modifier.fillMaxWidth()
+        )
+        if (!isCurrentDay) {
+            AstroRow(
+                dayAstro = dayAstro, modifier = Modifier.fillMaxWidth()
             )
-            if (!isCurrentDay) {
-                AstroRow(
-                    dayAstro = dayAstro, modifier = Modifier.fillMaxWidth()
-                )
-            }
         }
     }
+
 }
 
 @Composable
@@ -292,8 +278,6 @@ fun DetailsScreenPreview() {
     WeatherTheme {
         DetailsScreen(
             weatherDetails = DayWeather(),
-            onBackClick = {},
-            onSettingsClick = {}
         )
     }
 }

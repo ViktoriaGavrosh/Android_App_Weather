@@ -14,7 +14,6 @@ import com.viktoriagavrosh.weather.model.apimodel.Day
 import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
-import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.elements.forecastscreen.ForecastPager
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
@@ -25,10 +24,7 @@ fun ForecastScreen(
     weatherInfo: WeatherInfo,
     selectedDay: Day = Day(),
     onDetailsClick: (Weather) -> Unit,
-    onCityClick: () -> Unit,
-    onBackClick: () -> Unit = {},
-    onTabClick: (String) -> Unit = {},
-    onSettingsClick: () -> Unit
+    onTabClick: (String) -> Unit = {}
 ) {
     val tabList = try {
         List(3) {
@@ -49,35 +45,25 @@ fun ForecastScreen(
         initialPage = if (selectedDayIndex != -1) selectedDayIndex else 0
     )
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_small)),
     ) {
-        WeatherTopBar(
-            text = weatherInfo.location.cityName,
-            isBack = true,
-            onCityClick = onCityClick,
-            onBackClick = onBackClick,
-            onSettingsClick = onSettingsClick
+        WeatherTabRow(
+            tabList = tabList,
+            pagerState = pagerState,
+            isForecast = true,
+            onTabClick = onTabClick
         )
-        Column(
+        ForecastPager(
+            days = weatherInfo.forecast.days,
+            state = pagerState,
+            onDetailsClick = onDetailsClick,
             modifier = Modifier
-                .padding(dimensionResource(id = R.dimen.padding_small)),
-        ) {
-            WeatherTabRow(
-                tabList = tabList,
-                pagerState = pagerState,
-                isForecast = true,
-                onTabClick = onTabClick
-            )
-            ForecastPager(
-                days = weatherInfo.forecast.days,
-                state = pagerState,
-                onDetailsClick = onDetailsClick,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = dimensionResource(id = R.dimen.padding_small))
-            )
-        }
+                .fillMaxSize()
+                .padding(top = dimensionResource(id = R.dimen.padding_small))
+        )
     }
+
 }
 
 @Preview(showBackground = true)
@@ -86,9 +72,7 @@ fun ForecastScreenPreview() {
     WeatherTheme {
         ForecastScreen(
             weatherInfo = WeatherInfo(),
-            onDetailsClick = { /*TODO*/ },
-            onCityClick = { /*TODO*/ },
-            onSettingsClick = {}
+            onDetailsClick = { /*TODO*/ }
         )
     }
 }
