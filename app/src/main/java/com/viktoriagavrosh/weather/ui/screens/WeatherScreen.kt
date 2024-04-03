@@ -5,13 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.model.apimodel.DayWeather
 import com.viktoriagavrosh.weather.ui.WeatherViewModel
@@ -25,29 +23,25 @@ fun WeatherScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     /*
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val selectedScreen = Screen.valueOf(
-        backStackEntry?.destination?.route ?: Screen.CurrentWeather.name
-    )
+val backStackEntry by navController.currentBackStackEntryAsState()
+val selectedScreen = Screen.valueOf(
+    backStackEntry?.destination?.route ?: Screen.CurrentWeather.name
+)
      */
+
     // TODO add onBackClick = { navController.navigateUp() }
     NavHost(
         navController = navController,
         startDestination = Screen.CurrentWeather.name
     ) {
         composable(route = Screen.CurrentWeather.name) {
-            TabScreen(
+            CurrentWeatherScreen(
                 weatherInfo = uiState.weatherInfo,
-                tabList = listOf(
-                    stringResource(id = R.string.now),
-                    stringResource(id = R.string.forecast)
-                ),
                 onDetailsClick = { weather ->                           // TODO add logic provide Weather
                     viewModel.selectWeather(weather = weather)
                     navController.navigate(Screen.Details.name)
                 },
                 onCityClick = { TODO() },
-                isBack = false,
                 onForecastClick = { day ->
                     viewModel.selectDay(day)
                     navController.navigate(Screen.Forecast.name)
@@ -55,29 +49,18 @@ fun WeatherScreen(
                 onSettingsClick = {
                     navController.navigate(Screen.Settings.name)
                 },
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             )
         }
         composable(route = Screen.Forecast.name) {
-            TabScreen(
+            ForecastScreen(
                 weatherInfo = uiState.weatherInfo,
                 selectedDay = uiState.selectedDay,
-                tabList = try {
-                    List(3) {
-                        uiState.weatherInfo.forecast.days[it].date
-                            .substringAfter("-")
-                            .replace("-", "/")
-                    }
-                } catch (e: IndexOutOfBoundsException) {
-                    List(3) { "$it" }
-                },
                 onDetailsClick = { weather ->                             // TODO add logic provide Weather
                     viewModel.selectWeather(weather = weather)
                     navController.navigate(Screen.Details.name)
                 },
                 onCityClick = { TODO() },
-                isBack = true,
                 onBackClick = { navController.navigate(Screen.CurrentWeather.name) },
                 onTabClick = viewModel::selectDayByDate,
                 onSettingsClick = {
