@@ -22,22 +22,27 @@ import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.ui.WeatherState
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
-import com.viktoriagavrosh.weather.ui.util.Screen
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination.CurrentWeatherDestination
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination.DetailsDestination
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination.ForecastDestination
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination.SettingsDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherTopBar(
-    selectedScreen: Screen,
+    selectedScreen: NavigationDestination,
     weatherState: WeatherState,
     onCityClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
-    val text = when(selectedScreen) {
-        Screen.CurrentWeather,
-        Screen.Forecast -> weatherState.weatherInfo.location.cityName
-        Screen.Settings -> stringResource(id = R.string.settings)
-        Screen.Details -> {
+    val text = when (selectedScreen) {
+        CurrentWeatherDestination,
+        ForecastDestination -> weatherState.weatherInfo.location.cityName
+
+        SettingsDestination -> stringResource(id = R.string.settings)
+        DetailsDestination -> {
             if (weatherState.selectedWeather is CurrentWeather) {
                 stringResource(id = R.string.now)
             } else {
@@ -50,8 +55,9 @@ fun WeatherTopBar(
             Text(
                 text = text,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = if (selectedScreen != Screen.CurrentWeather
-                    && selectedScreen != Screen.Settings ) {
+                modifier = if (selectedScreen != CurrentWeatherDestination
+                    && selectedScreen != SettingsDestination
+                ) {
                     Modifier.clickable {
                         onCityClick()
                     }
@@ -64,7 +70,7 @@ fun WeatherTopBar(
             titleContentColor = Color.White
         ),
         navigationIcon = {
-            if (selectedScreen != Screen.CurrentWeather) {
+            if (selectedScreen != CurrentWeatherDestination) {
                 IconButton(
                     onClick = { onBackClick() }
                 ) {
@@ -79,7 +85,7 @@ fun WeatherTopBar(
             }
         },
         actions = {
-            if (selectedScreen != Screen.Settings) {
+            if (selectedScreen != SettingsDestination) {
                 IconButton(
                     onClick = onSettingsClick
                 ) {
@@ -98,7 +104,7 @@ fun WeatherTopBar(
 fun WeatherTopBarPreview() {
     WeatherTheme {
         WeatherTopBar(
-            selectedScreen = Screen.CurrentWeather,
+            selectedScreen = CurrentWeatherDestination,
             weatherState = WeatherState()
         )
     }

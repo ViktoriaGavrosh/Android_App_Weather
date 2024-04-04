@@ -11,7 +11,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.Day
-import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
 import com.viktoriagavrosh.weather.ui.elements.forecastscreen.ForecastPager
@@ -23,7 +22,7 @@ fun ForecastScreen(
     modifier: Modifier = Modifier,
     weatherInfo: WeatherInfo,
     selectedDay: Day = Day(),
-    onDetailsClick: (Weather) -> Unit,
+    onDetailsClick: (String) -> Unit,
     onTabClick: (String) -> Unit = {}
 ) {
     val tabList = try {

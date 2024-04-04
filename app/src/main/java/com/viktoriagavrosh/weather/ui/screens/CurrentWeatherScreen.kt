@@ -10,8 +10,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.model.apimodel.Day
-import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
 import com.viktoriagavrosh.weather.ui.elements.curentweatherscreen.CurrentWeatherPager
@@ -22,8 +20,8 @@ import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 fun CurrentWeatherScreen(
     modifier: Modifier = Modifier,
     weatherInfo: WeatherInfo,
-    onDetailsClick: (Weather) -> Unit,
-    onForecastClick: (Day) -> Unit = {},
+    onDetailsClick: (String) -> Unit,
+    onForecastClick: (String) -> Unit = {},
     onTabClick: (String) -> Unit = {}
 ) {
     val tabList = listOf(

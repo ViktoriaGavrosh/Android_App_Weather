@@ -14,17 +14,16 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.model.apimodel.Weather
 
 @Composable
 fun DetailButton(
     modifier: Modifier = Modifier,
-    weather: Weather,
-    onDetailsClick: (Weather) -> Unit,
+    weatherDate: String = "",
+    onDetailsClick: (String) -> Unit,
     isWhiteBorder: Boolean = false
 ) {
     OutlinedButton(
-        onClick = { onDetailsClick(weather) },
+        onClick = { onDetailsClick(weatherDate) },
         modifier = modifier
             .width(dimensionResource(id = R.dimen.button_width))
             .height(dimensionResource(id = R.dimen.button_height)),

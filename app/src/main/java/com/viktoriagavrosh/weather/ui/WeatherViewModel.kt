@@ -82,7 +82,14 @@ class WeatherViewModel(
         }
     }
 
-    fun selectWeather(weather: Weather) {
+    fun selectWeather(weatherDate: String) {
+        val weather = if (weatherDate.isEmpty()) {
+            _uiState.value.weatherInfo.currentWeather
+        } else {
+            _uiState.value.weatherInfo.forecast.days.first {
+                it.date == weatherDate
+            }.dayWeather
+        }
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -92,7 +99,10 @@ class WeatherViewModel(
         }
     }
 
-    fun selectDay(day: Day) {
+    fun selectDay(date: String) {
+        val day = _uiState.value.weatherInfo.forecast.days.first {
+            it.date == date
+        }
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -103,10 +113,10 @@ class WeatherViewModel(
     }
 
     fun selectDayByDate(date: String) {
-        val day = _uiState.value.weatherInfo.forecast.days.filter {
+        val day = _uiState.value.weatherInfo.forecast.days.first {
             it.date.substringAfter("-").replace("-", "/") == date
-        }[0]
-        selectDay(day)
+        }
+        selectDay(day.date)
     }
 
     companion object {
