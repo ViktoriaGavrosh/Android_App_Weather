@@ -29,28 +29,28 @@ import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.model.apimodel.DayAstro
 import com.viktoriagavrosh.weather.model.apimodel.DayWeather
-import com.viktoriagavrosh.weather.model.apimodel.Weather
+import com.viktoriagavrosh.weather.ui.WeatherState
+import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
-    weatherDetails: Weather,
-    dayAstro: DayAstro = DayAstro()
+    weatherState: WeatherState,
+    onBackClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
 ) {
-    var isCurrentDay = true
-    val windList = mutableListOf(
-        stringResource(id = R.string.wind, weatherDetails.windSpeedKm.toInt())
-    )
-    val detailsList = mutableListOf(
-        stringResource(id = R.string.precipitation, weatherDetails.precipitationMm),
-        stringResource(id = R.string.humidity, weatherDetails.humidity.toInt())
-    )
-    when (weatherDetails) {
+    val windList: MutableList<String> = mutableListOf()
+    val detailsList: MutableList<String> = mutableListOf()
+    when (weatherState.selectedWeather) {
         is CurrentWeather -> {
-            val weather: CurrentWeather = weatherDetails
+            val weather: CurrentWeather = weatherState.selectedWeather
+            windList.add(stringResource(id = R.string.wind, weather.windSpeedKm.toInt()))
             windList.add(stringResource(R.string.wind_gust, weather.windGustKm.toInt()))
             windList.add(stringResource(R.string.wind_direction, weather.windDirection))
+            detailsList.add(stringResource(id = R.string.precipitation, weather.precipitationMm))
+            detailsList.add(stringResource(id = R.string.humidity, weather.humidity.toInt()))
             detailsList.add(stringResource(R.string.cloudy, weather.cloud.toInt()))
             detailsList.add(stringResource(id = R.string.pressure, weather.pressureMm.toInt()))
             detailsList.add(stringResource(R.string.visibility, weather.visibleKm.toInt()))
@@ -58,8 +58,10 @@ fun DetailsScreen(
         }
 
         is DayWeather -> {
-            val weather: DayWeather = weatherDetails
-            isCurrentDay = false
+            val weather: DayWeather = weatherState.selectedWeather
+            windList.add(stringResource(id = R.string.wind, weather.windSpeedKm.toInt()))
+            detailsList.add(stringResource(id = R.string.precipitation, weather.precipitationMm))
+            detailsList.add(stringResource(id = R.string.humidity, weather.humidity.toInt()))
             detailsList.add(stringResource(R.string.visibility, weather.visibleKm.toInt()))
             detailsList.add(stringResource(R.string.uv_index, weather.uvIndex.toInt()))
         }
@@ -70,17 +72,23 @@ fun DetailsScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
     ) {
-        MainCard(
-            condition = weatherDetails.weatherCondition.condition,
-            iconUri = weatherDetails.weatherCondition.iconUri,
-            temp = weatherDetails.tempC
+        WeatherTopBar(
+            selectedScreen = NavigationDestination.DetailsDestination,
+            weatherState = weatherState,
+            onBackClick = onBackClick,
+            onSettingsClick = onSettingsClick
         )
-        if (isCurrentDay) {
+        MainCard(
+            condition = weatherState.selectedWeather.weatherCondition.condition,
+            iconUri = weatherState.selectedWeather.weatherCondition.iconUri,
+            temp = weatherState.selectedWeather.tempC
+        )
+        if (weatherState.selectedWeather is CurrentWeather) {
             DetailsCard(
                 detailsList = listOf(
                     stringResource(
                         id = R.string.feels_like,
-                        (weatherDetails as CurrentWeather).feelsLikeTempC.toInt()
+                        (weatherState.selectedWeather).feelsLikeTempC.toInt()
                     )
                 ), modifier = Modifier.fillMaxWidth()
             )
@@ -91,9 +99,10 @@ fun DetailsScreen(
         DetailsCard(
             detailsList = detailsList, modifier = Modifier.fillMaxWidth()
         )
-        if (!isCurrentDay) {
+        if (weatherState.selectedWeather is DayWeather) {
             AstroRow(
-                dayAstro = dayAstro, modifier = Modifier.fillMaxWidth()
+                dayAstro = weatherState.selectedDay.dayAstro,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
@@ -277,7 +286,7 @@ private fun AstroDetailRow(
 fun DetailsScreenPreview() {
     WeatherTheme {
         DetailsScreen(
-            weatherDetails = DayWeather(),
+            weatherState = WeatherState()
         )
     }
 }

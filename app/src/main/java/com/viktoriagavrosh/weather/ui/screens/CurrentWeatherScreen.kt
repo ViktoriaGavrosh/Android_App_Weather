@@ -10,19 +10,23 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
+import com.viktoriagavrosh.weather.ui.WeatherState
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
+import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.elements.curentweatherscreen.CurrentWeatherPager
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CurrentWeatherScreen(
     modifier: Modifier = Modifier,
-    weatherInfo: WeatherInfo,
+    weatherState: WeatherState,
     onDetailsClick: (String) -> Unit,
     onForecastClick: (String) -> Unit = {},
-    onTabClick: (String) -> Unit = {}
+    onTabClick: (String) -> Unit = {},
+    onCityClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
 ) {
     val tabList = listOf(
         stringResource(id = R.string.now),
@@ -36,13 +40,19 @@ fun CurrentWeatherScreen(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_small)),
     ) {
+        WeatherTopBar(
+            selectedScreen = NavigationDestination.CurrentWeatherDestination,
+            weatherState = weatherState,
+            onCityClick = onCityClick,
+            onSettingsClick = onSettingsClick
+        )
         WeatherTabRow(
             tabList = tabList,
             pagerState = pagerState,
             onTabClick = onTabClick
         )
         CurrentWeatherPager(
-            weatherInfo = weatherInfo,
+            weatherInfo = weatherState.weatherInfo,
             onDetailsClick = onDetailsClick,
             state = pagerState,
             onForecastClick = onForecastClick
@@ -56,8 +66,8 @@ fun CurrentWeatherScreen(
 fun CurrentWeatherScreenPreview() {
     WeatherTheme {
         CurrentWeatherScreen(
-            weatherInfo = WeatherInfo(),
-            onDetailsClick = { /*TODO*/ }
+            onDetailsClick = {},
+            weatherState = WeatherState()
         )
     }
 }

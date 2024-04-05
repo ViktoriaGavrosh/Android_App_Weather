@@ -10,24 +10,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.model.apimodel.Day
-import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
+import com.viktoriagavrosh.weather.ui.WeatherState
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
+import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.elements.forecastscreen.ForecastPager
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ForecastScreen(
     modifier: Modifier = Modifier,
-    weatherInfo: WeatherInfo,
-    selectedDay: Day = Day(),
+    weatherState: WeatherState,
     onDetailsClick: (String) -> Unit,
-    onTabClick: (String) -> Unit = {}
+    onTabClick: (String) -> Unit = {},
+    onCityClick: () -> Unit = {},
+    onBackClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
 ) {
     val tabList = try {
         List(3) {
-            weatherInfo.forecast.days[it].date
+            weatherState.weatherInfo.forecast.days[it].date
                 .substringAfter("-")
                 .replace("-", "/")
         }
@@ -35,7 +38,7 @@ fun ForecastScreen(
         List(3) { "$it" }
     }
     val selectedDayIndex = tabList.indexOf(
-        selectedDay.date
+        weatherState.selectedDay.date
             .substringAfter("-")
             .replace("-", "/")
     )
@@ -47,6 +50,13 @@ fun ForecastScreen(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_small)),
     ) {
+        WeatherTopBar(
+            selectedScreen = NavigationDestination.ForecastDestination,
+            weatherState = weatherState,
+            onCityClick = onCityClick,
+            onBackClick = onBackClick,
+            onSettingsClick = onSettingsClick
+        )
         WeatherTabRow(
             tabList = tabList,
             pagerState = pagerState,
@@ -54,7 +64,7 @@ fun ForecastScreen(
             onTabClick = onTabClick
         )
         ForecastPager(
-            days = weatherInfo.forecast.days,
+            days = weatherState.weatherInfo.forecast.days,
             state = pagerState,
             onDetailsClick = onDetailsClick,
             modifier = Modifier
@@ -70,7 +80,7 @@ fun ForecastScreen(
 fun ForecastScreenPreview() {
     WeatherTheme {
         ForecastScreen(
-            weatherInfo = WeatherInfo(),
+            weatherState = WeatherState(),
             onDetailsClick = { /*TODO*/ }
         )
     }

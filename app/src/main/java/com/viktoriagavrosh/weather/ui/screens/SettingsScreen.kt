@@ -25,16 +25,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.Wallpaper
-import com.viktoriagavrosh.weather.ui.Settings
+import com.viktoriagavrosh.weather.ui.WeatherState
+import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
+import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 
 @Composable
 fun SettingsScreen(
-    settings: Settings,
+    modifier: Modifier = Modifier,
+    weatherState: WeatherState,
     onMusicClick: () -> Unit,
     onCelsiusClick: (String) -> Unit,
     onWallpaperClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onBackClick: () -> Unit = {}
 ) {
     val listTemp = listOf(
         stringResource(R.string.temp_c),
@@ -45,23 +48,28 @@ fun SettingsScreen(
             .padding(dimensionResource(id = R.dimen.padding_small))
             .verticalScroll(rememberScrollState())
     ) {
+        WeatherTopBar(
+            selectedScreen = NavigationDestination.SettingsDestination,
+            weatherState = weatherState,
+            onBackClick = onBackClick
+        )
         MusicCard(
             text = stringResource(R.string.music),
-            isMusic = settings.isMusic,
+            isMusic = weatherState.settings.isMusic,
             onMusicClick = onMusicClick,
             modifier = Modifier.fillMaxWidth()
         )
         SettingsRadioButton(
             title = stringResource(R.string.temperature),
             listText = listTemp,
-            selectedButton = if (settings.isCelsius) listTemp[0] else listTemp[1],
+            selectedButton = if (weatherState.settings.isCelsius) listTemp[0] else listTemp[1],
             onButtonClick = onCelsiusClick,
             modifier = Modifier.fillMaxWidth()
         )
         SettingsRadioButton(
             title = stringResource(id = R.string.wallpaper),
             listText = Wallpaper.entries.map { it.name },
-            selectedButton = settings.wallpaper.name,
+            selectedButton = weatherState.settings.wallpaper.name,
             onButtonClick = onWallpaperClick,
             modifier = Modifier.fillMaxWidth()
         )
@@ -158,7 +166,7 @@ private fun SettingsRadioButton(
 fun SettingsScreenPreview() {
     WeatherTheme {
         SettingsScreen(
-            settings = Settings(),
+            weatherState = WeatherState(),
             onMusicClick = {},
             onCelsiusClick = {},
             onWallpaperClick = {}
