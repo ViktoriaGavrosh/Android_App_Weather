@@ -21,9 +21,7 @@ import kotlinx.coroutines.launch
 fun WeatherTabRow(
     modifier: Modifier = Modifier,
     tabList: List<String>,
-    pagerState: PagerState,
-    isForecast: Boolean = false,
-    onTabClick: (String) -> Unit = {}
+    pagerState: PagerState
 ) {
     val tabIndex = pagerState.currentPage
     val coroutineScope = rememberCoroutineScope()
@@ -41,7 +39,6 @@ fun WeatherTabRow(
                     selected = false,
                     onClick = {
                         coroutineScope.launch {
-                            if (isForecast) onTabClick(text)
                             pagerState.animateScrollToPage(index)
                         }
                     },

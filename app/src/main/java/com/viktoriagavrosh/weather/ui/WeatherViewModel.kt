@@ -9,9 +9,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.weather.WeatherApplication
 import com.viktoriagavrosh.weather.data.WeatherRepository
 import com.viktoriagavrosh.weather.model.Wallpaper
-import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
-import com.viktoriagavrosh.weather.model.apimodel.Day
-import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -82,43 +79,6 @@ class WeatherViewModel(
         }
     }
 
-    fun selectWeather(weatherDate: String) {
-        val weather = if (weatherDate.isEmpty()) {
-            _uiState.value.weatherInfo.currentWeather
-        } else {
-            _uiState.value.weatherInfo.forecast.days.first {
-                it.date == weatherDate
-            }.dayWeather
-        }
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    selectedWeather = weather
-                )
-            }
-        }
-    }
-
-    fun selectDay(date: String) {
-        val day = _uiState.value.weatherInfo.forecast.days.first {
-            it.date == date
-        }
-        viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    selectedDay = day
-                )
-            }
-        }
-    }
-
-    fun selectDayByDate(date: String) {
-        val day = _uiState.value.weatherInfo.forecast.days.first {
-            it.date.substringAfter("-").replace("-", "/") == date
-        }
-        selectDay(day.date)
-    }
-
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
@@ -132,8 +92,6 @@ class WeatherViewModel(
 
 data class WeatherState(
     val weatherInfo: WeatherInfo = WeatherInfo(),
-    val selectedWeather: Weather = CurrentWeather(),
-    val selectedDay: Day = Day(),
     val settings: Settings = Settings()
 )
 

@@ -10,7 +10,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.ui.WeatherState
+import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.elements.curentweatherscreen.CurrentWeatherPager
@@ -21,10 +21,10 @@ import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 @Composable
 fun CurrentWeatherScreen(
     modifier: Modifier = Modifier,
-    weatherState: WeatherState,
+    city: String,
+    weatherInfo: WeatherInfo,
     onDetailsClick: (String) -> Unit,
     onForecastClick: (String) -> Unit = {},
-    onTabClick: (String) -> Unit = {},
     onCityClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
@@ -42,17 +42,16 @@ fun CurrentWeatherScreen(
     ) {
         WeatherTopBar(
             selectedScreen = NavigationDestination.CurrentWeatherDestination,
-            weatherState = weatherState,
+            title = city,
             onCityClick = onCityClick,
             onSettingsClick = onSettingsClick
         )
         WeatherTabRow(
             tabList = tabList,
-            pagerState = pagerState,
-            onTabClick = onTabClick
+            pagerState = pagerState
         )
         CurrentWeatherPager(
-            weatherInfo = weatherState.weatherInfo,
+            weatherInfo = weatherInfo,
             onDetailsClick = onDetailsClick,
             state = pagerState,
             onForecastClick = onForecastClick
@@ -67,7 +66,8 @@ fun CurrentWeatherScreenPreview() {
     WeatherTheme {
         CurrentWeatherScreen(
             onDetailsClick = {},
-            weatherState = WeatherState()
+            weatherInfo = WeatherInfo(),
+            city = "City"
         )
     }
 }

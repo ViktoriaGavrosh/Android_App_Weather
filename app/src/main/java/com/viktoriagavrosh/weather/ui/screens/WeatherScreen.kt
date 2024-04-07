@@ -36,15 +36,14 @@ fun WeatherScreen(
         ) {
             composable(route = CurrentWeatherDestination.route) {
                 CurrentWeatherScreen(
-                    onDetailsClick = {
-                        viewModel.selectWeather(weatherDate = "")    // TODO double work !!!
-                        navController.navigate("${DetailsDestination.route}/{${it}}")     // {${it}} because if not -> FatalException
+                    onDetailsClick = { date ->
+                        navController.navigate("${DetailsDestination.route}/{${date}}")     // {${it}} because if not -> FatalException
                     },
                     onForecastClick = { date ->
-                        viewModel.selectDay(date)
-                        navController.navigate("${ForecastDestination.route}/${it}")
+                        navController.navigate("${ForecastDestination.route}/${date}")
                     },
-                    weatherState = uiState,
+                    weatherInfo = uiState.weatherInfo,
+                    city = uiState.weatherInfo.location.cityName,
                     onCityClick = {},
                     onSettingsClick = { navController.navigate(SettingsDestination.route) }
                 )
@@ -54,14 +53,16 @@ fun WeatherScreen(
                 arguments = listOf(navArgument(ForecastDestination.itemIdArg) {
                     type = NavType.StringType
                 })
-            ) {
+            ) { backStackEntry ->
+                val dateSelectedDay =
+                    backStackEntry.arguments?.getString(ForecastDestination.itemIdArg)
                 ForecastScreen(
-                    weatherState = uiState,
+                    days = uiState.weatherInfo.forecast.days,
+                    city = uiState.weatherInfo.location.cityName,
+                    dateSelectedDay = dateSelectedDay ?: "",
                     onDetailsClick = { weatherDate ->
-                        viewModel.selectWeather(weatherDate = weatherDate)
                         navController.navigate("${DetailsDestination.route}/{${weatherDate}}")
                     },
-                    onTabClick = viewModel::selectDayByDate,
                     onCityClick = { TODO() },
                     onBackClick = { navController.popBackStack() },
                     onSettingsClick = { navController.navigate(SettingsDestination.route) }
@@ -72,16 +73,20 @@ fun WeatherScreen(
                 arguments = listOf(navArgument(DetailsDestination.itemIdArg) {
                     type = NavType.StringType
                 })
-            ) {
+            ) { backStackEntry ->
+                val dateSelectedDay =
+                    backStackEntry.arguments?.getString(DetailsDestination.itemIdArg)
+                        ?.replace(Regex("[},{]"), "")
                 DetailsScreen(
-                    weatherState = uiState,
+                    weatherInfo = uiState.weatherInfo,
+                    dateSelectedDay = dateSelectedDay ?: "",
                     onBackClick = { navController.popBackStack() },
                     onSettingsClick = { navController.navigate(SettingsDestination.route) }
                 )
             }
             composable(route = SettingsDestination.route) {
                 SettingsScreen(
-                    weatherState = uiState,
+                    settings = uiState.settings,
                     onMusicClick = viewModel::changeMusic,
                     onCelsiusClick = viewModel::changeCelsius,
                     onWallpaperClick = viewModel::changeWallpaper,

@@ -21,12 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
-import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
-import com.viktoriagavrosh.weather.ui.WeatherState
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 import com.viktoriagavrosh.weather.ui.util.NavigationDestination.CurrentWeatherDestination
-import com.viktoriagavrosh.weather.ui.util.NavigationDestination.DetailsDestination
 import com.viktoriagavrosh.weather.ui.util.NavigationDestination.ForecastDestination
 import com.viktoriagavrosh.weather.ui.util.NavigationDestination.SettingsDestination
 
@@ -34,28 +31,15 @@ import com.viktoriagavrosh.weather.ui.util.NavigationDestination.SettingsDestina
 @Composable
 fun WeatherTopBar(
     selectedScreen: NavigationDestination,
-    weatherState: WeatherState,
+    title: String,
     onCityClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
-    val text = when (selectedScreen) {
-        CurrentWeatherDestination,
-        ForecastDestination -> weatherState.weatherInfo.location.cityName
-
-        SettingsDestination -> stringResource(id = R.string.settings)
-        DetailsDestination -> {
-            if (weatherState.selectedWeather is CurrentWeather) {
-                stringResource(id = R.string.now)
-            } else {
-                weatherState.selectedDay.date
-            }
-        }
-    }
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = text,
+                text = title,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = if (selectedScreen != CurrentWeatherDestination
                     && selectedScreen != SettingsDestination
@@ -110,7 +94,7 @@ fun WeatherTopBarPreview() {
     WeatherTheme {
         WeatherTopBar(
             selectedScreen = ForecastDestination,
-            weatherState = WeatherState()
+            title = "City"
         )
     }
 }

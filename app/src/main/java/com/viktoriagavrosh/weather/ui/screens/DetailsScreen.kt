@@ -29,7 +29,8 @@ import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.model.apimodel.DayAstro
 import com.viktoriagavrosh.weather.model.apimodel.DayWeather
-import com.viktoriagavrosh.weather.ui.WeatherState
+import com.viktoriagavrosh.weather.model.apimodel.Weather
+import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 import com.viktoriagavrosh.weather.ui.util.NavigationDestination
@@ -37,35 +38,72 @@ import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,
-    weatherState: WeatherState,
+    weatherInfo: WeatherInfo,
+    dateSelectedDay: String,
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
-    val windList: MutableList<String> = mutableListOf()
-    val detailsList: MutableList<String> = mutableListOf()
-    when (weatherState.selectedWeather) {
-        is CurrentWeather -> {
-            val weather: CurrentWeather = weatherState.selectedWeather
-            windList.add(stringResource(id = R.string.wind, weather.windSpeedKm.toInt()))
-            windList.add(stringResource(R.string.wind_gust, weather.windGustKm.toInt()))
-            windList.add(stringResource(R.string.wind_direction, weather.windDirection))
-            detailsList.add(stringResource(id = R.string.precipitation, weather.precipitationMm))
-            detailsList.add(stringResource(id = R.string.humidity, weather.humidity.toInt()))
-            detailsList.add(stringResource(R.string.cloudy, weather.cloud.toInt()))
-            detailsList.add(stringResource(id = R.string.pressure, weather.pressureMm.toInt()))
-            detailsList.add(stringResource(R.string.visibility, weather.visibleKm.toInt()))
-            detailsList.add(stringResource(R.string.uv_index, weather.uvIndex.toInt()))
-        }
-
-        is DayWeather -> {
-            val weather: DayWeather = weatherState.selectedWeather
-            windList.add(stringResource(id = R.string.wind, weather.windSpeedKm.toInt()))
-            detailsList.add(stringResource(id = R.string.precipitation, weather.precipitationMm))
-            detailsList.add(stringResource(id = R.string.humidity, weather.humidity.toInt()))
-            detailsList.add(stringResource(R.string.visibility, weather.visibleKm.toInt()))
-            detailsList.add(stringResource(R.string.uv_index, weather.uvIndex.toInt()))
-        }
+    if (dateSelectedDay.isEmpty()) {
+        val currentWeather: CurrentWeather = weatherInfo.currentWeather
+        DetailScreenContent(
+            weatherInfo = weatherInfo,
+            weather = currentWeather,
+            isCurrentWeather = true,
+            windList = listOf(
+                stringResource(id = R.string.wind, currentWeather.windSpeedKm.toInt()),
+                stringResource(R.string.wind_gust, currentWeather.windGustKm.toInt()),
+                stringResource(R.string.wind_direction, currentWeather.windDirection)
+            ),
+            detailsList = listOf(
+                stringResource(id = R.string.precipitation, currentWeather.precipitationMm),
+                stringResource(id = R.string.humidity, currentWeather.humidity.toInt()),
+                stringResource(R.string.cloudy, currentWeather.cloud.toInt()),
+                stringResource(id = R.string.pressure, currentWeather.pressureMm.toInt()),
+                stringResource(R.string.visibility, currentWeather.visibleKm.toInt()),
+                stringResource(R.string.uv_index, currentWeather.uvIndex.toInt())
+            ),
+            topBarTitle = stringResource(id = R.string.now),
+            onBackClick = onBackClick,
+            onSettingsClick = onSettingsClick,
+            modifier = modifier
+        )
+    } else {
+        val selectedDay =
+            weatherInfo.forecast.days.firstOrNull { it.date == dateSelectedDay }
+        val dayWeather: DayWeather = selectedDay?.dayWeather ?: DayWeather()
+        DetailScreenContent(
+            weatherInfo = weatherInfo,
+            weather = dayWeather,
+            isCurrentWeather = false,
+            windList = listOf(stringResource(id = R.string.wind, dayWeather.windSpeedKm.toInt())),
+            detailsList = listOf(
+                stringResource(id = R.string.precipitation, dayWeather.precipitationMm),
+                stringResource(id = R.string.humidity, dayWeather.humidity.toInt()),
+                stringResource(R.string.visibility, dayWeather.visibleKm.toInt()),
+                stringResource(R.string.uv_index, dayWeather.uvIndex.toInt())
+            ),
+            dayAstro = selectedDay?.dayAstro ?: DayAstro(),
+            topBarTitle = selectedDay?.date ?: "",
+            onBackClick = onBackClick,
+            onSettingsClick = onSettingsClick,
+            modifier = modifier
+        )
     }
+}
+
+@Composable
+private fun DetailScreenContent(
+    modifier: Modifier = Modifier,
+    weatherInfo: WeatherInfo,
+    onBackClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
+    topBarTitle: String,
+    weather: Weather,
+    dayAstro: DayAstro = DayAstro(),
+    isCurrentWeather: Boolean,
+    windList: List<String>,
+    detailsList: List<String>
+) {
     Column(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_small))
@@ -74,21 +112,21 @@ fun DetailsScreen(
     ) {
         WeatherTopBar(
             selectedScreen = NavigationDestination.DetailsDestination,
-            weatherState = weatherState,
+            title = topBarTitle,
             onBackClick = onBackClick,
             onSettingsClick = onSettingsClick
         )
         MainCard(
-            condition = weatherState.selectedWeather.weatherCondition.condition,
-            iconUri = weatherState.selectedWeather.weatherCondition.iconUri,
-            temp = weatherState.selectedWeather.tempC
+            condition = weather.weatherCondition.condition,
+            iconUri = weather.weatherCondition.iconUri,
+            temp = weather.tempC
         )
-        if (weatherState.selectedWeather is CurrentWeather) {
+        if (isCurrentWeather) {
             DetailsCard(
                 detailsList = listOf(
                     stringResource(
                         id = R.string.feels_like,
-                        (weatherState.selectedWeather).feelsLikeTempC.toInt()
+                        weatherInfo.currentWeather.feelsLikeTempC.toInt()
                     )
                 ), modifier = Modifier.fillMaxWidth()
             )
@@ -99,14 +137,13 @@ fun DetailsScreen(
         DetailsCard(
             detailsList = detailsList, modifier = Modifier.fillMaxWidth()
         )
-        if (weatherState.selectedWeather is DayWeather) {
+        if (!isCurrentWeather) {
             AstroRow(
-                dayAstro = weatherState.selectedDay.dayAstro,
+                dayAstro = dayAstro,
                 modifier = Modifier.fillMaxWidth()
             )
         }
     }
-
 }
 
 @Composable
@@ -286,7 +323,8 @@ private fun AstroDetailRow(
 fun DetailsScreenPreview() {
     WeatherTheme {
         DetailsScreen(
-            weatherState = WeatherState()
+            weatherInfo = WeatherInfo(),
+            dateSelectedDay = ""
         )
     }
 }
