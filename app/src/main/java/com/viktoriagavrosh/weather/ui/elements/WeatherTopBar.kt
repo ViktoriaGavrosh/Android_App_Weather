@@ -5,14 +5,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,21 +40,21 @@ import com.viktoriagavrosh.weather.ui.util.NavigationDestination.SettingsDestina
 fun WeatherTopBar(
     selectedScreen: NavigationDestination,
     title: String,
-    onCityClick: () -> Unit = {},
+    onCityChangeClick: (String) -> Unit = {},
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
+    var showCityDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
     CenterAlignedTopAppBar(
         title = {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
-                modifier = if (selectedScreen != CurrentWeatherDestination
-                    && selectedScreen != SettingsDestination
+                modifier = if (selectedScreen == CurrentWeatherDestination
                 ) {
-                    Modifier.clickable {
-                        onCityClick()
-                    }
+                    Modifier.clickable { showCityDialog = true }
                 } else {
                     Modifier
                 }
@@ -86,6 +94,79 @@ fun WeatherTopBar(
             }
         }
     )
+    if (showCityDialog) {
+        ChangeCityDialog(
+            onConfirm = {
+                showCityDialog = false
+                onCityChangeClick(it)
+            },
+            onDismiss = { showCityDialog = false },
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        )
+    }
+}
+
+@Composable
+private fun ChangeCityDialog(
+    modifier: Modifier = Modifier,
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var text by rememberSaveable {
+        mutableStateOf("")
+    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            Button(
+                onClick = { onConfirm(text) }
+            ) {
+                Text(
+                    text = stringResource(R.string.ok),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+        },
+        modifier = modifier,
+        dismissButton = {
+            OutlinedButton(
+                onClick = onDismiss
+            ) {
+                Text(
+                    text = stringResource(R.string.cancel),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
+        },
+        text = {
+            OutlinedTextField(
+                value = text,
+                onValueChange = { text = it },
+                textStyle = MaterialTheme.typography.titleLarge.copy(
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                label = {
+                    Text(
+                        text = stringResource(id = R.string.enter_city),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.onPrimary
+    )
+}
+
+@Preview
+@Composable
+fun ChangeCityDialogPreview() {
+    WeatherTheme {
+        ChangeCityDialog(
+            onConfirm = {},
+            onDismiss = {}
+        )
+    }
 }
 
 @Preview(showBackground = true)

@@ -8,6 +8,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.model.apimodel.Day
@@ -22,10 +23,8 @@ import com.viktoriagavrosh.weather.ui.util.NavigationDestination
 fun ForecastScreen(
     modifier: Modifier = Modifier,
     days: List<Day>,
-    city: String,
     dateSelectedDay: String,
     onDetailsClick: (String) -> Unit,
-    onCityClick: () -> Unit = {},
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
@@ -52,8 +51,7 @@ fun ForecastScreen(
     ) {
         WeatherTopBar(
             selectedScreen = NavigationDestination.ForecastDestination,
-            title = city,
-            onCityClick = onCityClick,
+            title = stringResource(R.string.forecast_top_bar),
             onBackClick = onBackClick,
             onSettingsClick = onSettingsClick
         )
@@ -79,7 +77,6 @@ fun ForecastScreenPreview() {
     WeatherTheme {
         ForecastScreen(
             days = emptyList(),
-            city = "City",
             dateSelectedDay = "",
             onDetailsClick = {}
         )

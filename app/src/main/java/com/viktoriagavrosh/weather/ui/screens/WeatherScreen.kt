@@ -44,7 +44,7 @@ fun WeatherScreen(
                     },
                     weatherInfo = uiState.weatherInfo,
                     city = uiState.weatherInfo.location.cityName,
-                    onCityClick = {},
+                    onCityChangeClick = viewModel::changeCity,
                     onSettingsClick = { navController.navigate(SettingsDestination.route) }
                 )
             }
@@ -58,12 +58,10 @@ fun WeatherScreen(
                     backStackEntry.arguments?.getString(ForecastDestination.itemIdArg)
                 ForecastScreen(
                     days = uiState.weatherInfo.forecast.days,
-                    city = uiState.weatherInfo.location.cityName,
                     dateSelectedDay = dateSelectedDay ?: "",
                     onDetailsClick = { weatherDate ->
                         navController.navigate("${DetailsDestination.route}/{${weatherDate}}")
                     },
-                    onCityClick = { TODO() },
                     onBackClick = { navController.popBackStack() },
                     onSettingsClick = { navController.navigate(SettingsDestination.route) }
                 )

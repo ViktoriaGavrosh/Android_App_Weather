@@ -26,4 +26,8 @@
     <string name="visibility">"Visibility: %1$s km"</string>
     <string name="uv_index">"UV index: %1$s"</string>
     <string name="sun">Sun</string>
+    <string name="forecast_top_bar">Forecast</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_city">Enter city</string>
 </resources>

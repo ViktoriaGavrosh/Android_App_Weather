@@ -25,7 +25,7 @@ fun CurrentWeatherScreen(
     weatherInfo: WeatherInfo,
     onDetailsClick: (String) -> Unit,
     onForecastClick: (String) -> Unit = {},
-    onCityClick: () -> Unit = {},
+    onCityChangeClick: (String) -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
     val tabList = listOf(
@@ -43,7 +43,7 @@ fun CurrentWeatherScreen(
         WeatherTopBar(
             selectedScreen = NavigationDestination.CurrentWeatherDestination,
             title = city,
-            onCityClick = onCityClick,
+            onCityChangeClick = onCityChangeClick,
             onSettingsClick = onSettingsClick
         )
         WeatherTabRow(
