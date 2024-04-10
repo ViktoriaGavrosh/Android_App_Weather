@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.weather.ui.util
+package com.viktoriagavrosh.weather.ui.navigation
 
 sealed class NavigationDestination {
     abstract val route: String

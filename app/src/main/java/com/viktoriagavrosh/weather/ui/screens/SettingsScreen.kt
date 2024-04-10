@@ -28,7 +28,7 @@ import com.viktoriagavrosh.weather.model.Wallpaper
 import com.viktoriagavrosh.weather.ui.Settings
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
-import com.viktoriagavrosh.weather.ui.util.NavigationDestination
+import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
 
 @Composable
 fun SettingsScreen(

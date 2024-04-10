@@ -31,11 +31,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.viktoriagavrosh.weather.R
+import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
+import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination.CurrentWeatherDestination
+import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination.ForecastDestination
+import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination.SettingsDestination
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
-import com.viktoriagavrosh.weather.ui.util.NavigationDestination
-import com.viktoriagavrosh.weather.ui.util.NavigationDestination.CurrentWeatherDestination
-import com.viktoriagavrosh.weather.ui.util.NavigationDestination.ForecastDestination
-import com.viktoriagavrosh.weather.ui.util.NavigationDestination.SettingsDestination
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
