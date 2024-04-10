@@ -1,5 +1,7 @@
 package com.viktoriagavrosh.weather.ui
 
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -7,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.viktoriagavrosh.weather.WeatherApplication
+import com.viktoriagavrosh.weather.data.WeatherApiException
 import com.viktoriagavrosh.weather.data.WeatherRepository
 import com.viktoriagavrosh.weather.model.Wallpaper
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
@@ -21,20 +24,16 @@ class WeatherViewModel(
     private var _uiState = MutableStateFlow(WeatherState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        getWeatherInfo(city = "Minsk")
-    }
-
-    fun changeCity(city: String) {
-        getWeatherInfo(city)
-    }
-
-    private fun getWeatherInfo(city: String) {
+    fun getWeatherInfo(city: String, context: Context) {
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    weatherInfo = weatherRepository.getWeatherInfo(city)
-                )
+            try {
+                _uiState.update {
+                    it.copy(
+                        weatherInfo = weatherRepository.getWeatherInfo(city)
+                    )
+                }
+            } catch (e: WeatherApiException) {
+                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

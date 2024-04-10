@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.weather.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -25,7 +26,7 @@ fun CurrentWeatherScreen(
     weatherInfo: WeatherInfo,
     onDetailsClick: (String) -> Unit,
     onForecastClick: (String) -> Unit = {},
-    onCityChangeClick: (String) -> Unit = {},
+    onCityChangeClick: (String, Context) -> Unit = { _, _ -> },
     onSettingsClick: () -> Unit = {}
 ) {
     val tabList = listOf(

@@ -1,6 +1,7 @@
 package com.viktoriagavrosh.weather.data
 
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
+import retrofit2.HttpException
 import java.io.IOException
 
 interface WeatherRepository {
@@ -14,7 +15,11 @@ class NetworkWeatherRepository(
         return try {
             weatherApiService.getWeatherInfo(city = city)
         } catch (e: IOException) {
-            WeatherInfo()
+            throw WeatherApiException("No internet")
+        } catch (e: HttpException) {
+            throw WeatherApiException("Wrong city name")
         }
     }
 }
+
+class WeatherApiException(override val message: String?) : Exception()

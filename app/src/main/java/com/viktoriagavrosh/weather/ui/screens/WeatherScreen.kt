@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -25,7 +26,10 @@ fun WeatherScreen(
     viewModel: WeatherViewModel = viewModel(factory = WeatherViewModel.Factory),
     navController: NavHostController = rememberNavController()
 ) {
+    val context = LocalContext.current
+    viewModel.getWeatherInfo("Minsk", context)
     val uiState by viewModel.uiState.collectAsState()
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -44,7 +48,7 @@ fun WeatherScreen(
                     },
                     weatherInfo = uiState.weatherInfo,
                     city = uiState.weatherInfo.location.cityName,
-                    onCityChangeClick = viewModel::changeCity,
+                    onCityChangeClick = viewModel::getWeatherInfo,
                     onSettingsClick = { navController.navigate(SettingsDestination.route) }
                 )
             }
