@@ -97,5 +97,5 @@ data class WeatherState(
 data class Settings(
     val isMusic: Boolean = true,
     val isCelsius: Boolean = true,
-    val wallpaper: Wallpaper = Wallpaper.DAY
+    val wallpaper: Wallpaper = Wallpaper.CLOUDY
 )

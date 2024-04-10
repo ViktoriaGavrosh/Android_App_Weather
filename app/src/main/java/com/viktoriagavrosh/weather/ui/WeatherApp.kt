@@ -16,7 +16,7 @@ import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 fun WeatherApp() {
     // Image morning sky, night sky...
     Image(
-        painter = painterResource(id = R.drawable.weather_bg),
+        painter = painterResource(id = R.drawable.cloudy_bg),
         contentDescription = null,
         modifier = Modifier
             .fillMaxSize()
