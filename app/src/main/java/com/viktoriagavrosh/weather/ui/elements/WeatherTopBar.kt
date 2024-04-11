@@ -1,6 +1,5 @@
 package com.viktoriagavrosh.weather.ui.elements
 
-import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,7 +40,7 @@ import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 fun WeatherTopBar(
     selectedScreen: NavigationDestination,
     title: String,
-    onCityChangeClick: (String, Context) -> Unit = { _, _ -> },
+    onCityChangeClick: (String) -> Unit = {},
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
@@ -97,11 +95,10 @@ fun WeatherTopBar(
         }
     )
     if (showCityDialog) {
-        val context = LocalContext.current
         ChangeCityDialog(
             onConfirm = {
                 showCityDialog = false
-                onCityChangeClick(it, context)
+                onCityChangeClick(it)
             },
             onDismiss = { showCityDialog = false },
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))

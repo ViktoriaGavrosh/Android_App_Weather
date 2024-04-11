@@ -1,6 +1,5 @@
 package com.viktoriagavrosh.weather.ui.screens
 
-import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -15,8 +14,8 @@ import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTabRow
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.elements.curentweatherscreen.CurrentWeatherPager
-import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
+import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -26,7 +25,7 @@ fun CurrentWeatherScreen(
     weatherInfo: WeatherInfo,
     onDetailsClick: (String) -> Unit,
     onForecastClick: (String) -> Unit = {},
-    onCityChangeClick: (String, Context) -> Unit = { _, _ -> },
+    onCityChangeClick: (String) -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
     val tabList = listOf(

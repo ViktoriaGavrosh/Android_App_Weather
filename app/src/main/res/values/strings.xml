@@ -31,4 +31,7 @@
     <string name="cancel">Cancel</string>
     <string name="enter_city">Enter city</string>
     <string name="wrong_city_name">Wrong city name</string>
+    <string name="moon">Moon</string>
+    <string name="rise">rise</string>
+    <string name="set">set</string>
 </resources>

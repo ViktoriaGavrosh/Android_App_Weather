@@ -32,8 +32,8 @@ import com.viktoriagavrosh.weather.model.apimodel.DayWeather
 import com.viktoriagavrosh.weather.model.apimodel.Weather
 import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
-import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
+import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
 @Composable
 fun DetailsScreen(
@@ -234,12 +234,14 @@ private fun AstroRow(
     ) {
         AstroCard(
             icon = R.drawable.ic_sun,
+            description = stringResource(id = R.string.sun),
             upTime = dayAstro.sunriseTime,
             downTime = dayAstro.sunsetTime,
             modifier = Modifier.weight(1F)
         )
         AstroCard(
             icon = R.drawable.ic_moon,
+            description = stringResource(R.string.moon),
             upTime = dayAstro.moonriseTime,
             downTime = dayAstro.moonsetTime,
             moonPhase = dayAstro.moonPhase,
@@ -252,6 +254,7 @@ private fun AstroRow(
 private fun AstroCard(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int,
+    description: String,
     upTime: String,
     downTime: String,
     moonPhase: String = ""
@@ -267,7 +270,7 @@ private fun AstroCard(
             ) {
                 Image(
                     painter = painterResource(id = icon),
-                    contentDescription = "",    // TODO add description
+                    contentDescription = description,
                     modifier = Modifier.padding(
                         start = dimensionResource(id = R.dimen.padding_medium),
                         end = dimensionResource(id = R.dimen.padding_small)
@@ -308,7 +311,7 @@ private fun AstroDetailRow(
             } else {
                 painterResource(id = R.drawable.ic_down)
             },
-            contentDescription = ""       // TODO add description
+            contentDescription = if (isUp) stringResource(R.string.rise) else stringResource(R.string.set)
         )
         Text(
             text = text,

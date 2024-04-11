@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,12 +21,10 @@ fun WeatherApp(
     viewModel: WeatherViewModel = viewModel(factory = WeatherViewModel.Factory),
     navController: NavHostController = rememberNavController()
 ) {
-    val context = LocalContext.current
-    viewModel.getWeatherInfo("Minsk", context)
     val uiState by viewModel.uiState.collectAsState()
 
     Image(
-        painter = painterResource(id = uiState.settings.wallpaper.imageId),
+        painter = painterResource(id = viewModel.wallpaperId.collectAsState().value),
         contentDescription = null,
         modifier = Modifier
             .fillMaxSize()

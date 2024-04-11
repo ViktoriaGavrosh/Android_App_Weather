@@ -2,13 +2,14 @@ package com.viktoriagavrosh.weather.ui.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.viktoriagavrosh.weather.ui.WeatherState
+import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import com.viktoriagavrosh.weather.ui.WeatherViewModel
 import com.viktoriagavrosh.weather.ui.screens.CurrentWeatherScreen
 import com.viktoriagavrosh.weather.ui.screens.DetailsScreen
@@ -19,9 +20,13 @@ import com.viktoriagavrosh.weather.ui.screens.SettingsScreen
 fun WeatherNavHost(
     navController: NavHostController,
     viewModel: WeatherViewModel,
-    uiState: WeatherState,
+    uiState: WeatherInfo,
     modifier: Modifier = Modifier
 ) {
+    val isMusicState = viewModel.isMusic.collectAsState()
+    val isCelsiusState = viewModel.isCelsius.collectAsState()
+    val wallpaperIdState = viewModel.wallpaperId.collectAsState()
+
     Column(
         modifier = modifier,
     ) {
@@ -37,9 +42,9 @@ fun WeatherNavHost(
                     onForecastClick = { date ->
                         navController.navigate("${NavigationDestination.ForecastDestination.route}/${date}")
                     },
-                    weatherInfo = uiState.weatherInfo,
-                    city = uiState.weatherInfo.location.cityName,
-                    onCityChangeClick = viewModel::getWeatherInfo,
+                    weatherInfo = uiState,
+                    city = uiState.location.cityName,
+                    onCityChangeClick = viewModel::changeCity,
                     onSettingsClick = { navController.navigate(NavigationDestination.SettingsDestination.route) }
                 )
             }
@@ -52,7 +57,7 @@ fun WeatherNavHost(
                 val dateSelectedDay =
                     backStackEntry.arguments?.getString(NavigationDestination.ForecastDestination.itemIdArg)
                 ForecastScreen(
-                    days = uiState.weatherInfo.forecast.days,
+                    days = uiState.forecast.days,
                     dateSelectedDay = dateSelectedDay ?: "",
                     onDetailsClick = { weatherDate ->
                         navController.navigate("${NavigationDestination.DetailsDestination.route}/{${weatherDate}}")
@@ -71,7 +76,7 @@ fun WeatherNavHost(
                     backStackEntry.arguments?.getString(NavigationDestination.DetailsDestination.itemIdArg)
                         ?.replace(Regex("[},{]"), "")
                 DetailsScreen(
-                    weatherInfo = uiState.weatherInfo,
+                    weatherInfo = uiState,
                     dateSelectedDay = dateSelectedDay ?: "",
                     onBackClick = { navController.popBackStack() },
                     onSettingsClick = { navController.navigate(NavigationDestination.SettingsDestination.route) }
@@ -79,7 +84,9 @@ fun WeatherNavHost(
             }
             composable(route = NavigationDestination.SettingsDestination.route) {
                 SettingsScreen(
-                    settings = uiState.settings,
+                    isMusicState = isMusicState,
+                    isCelsiusState = isCelsiusState,
+                    wallpaperIdState = wallpaperIdState,
                     onMusicClick = viewModel::changeMusic,
                     onCelsiusClick = viewModel::changeCelsius,
                     onWallpaperClick = viewModel::changeWallpaper,
