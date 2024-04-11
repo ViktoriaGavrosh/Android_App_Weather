@@ -1,15 +1,25 @@
 package com.viktoriagavrosh.weather.data
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
+/**
+ * App container for Dependency injection
+ */
 interface AppContainer {
     val weatherRepository: WeatherRepository
+    val settingsRepository: SettingsRepository
 }
 
-class DefaultAppContainer: AppContainer {
+/**
+ * [AppContainer] implementation that provides instances of [NetworkWeatherRepository] and
+ * [UserSettingsRepository]
+ */
+class DefaultAppContainer(dataStore: DataStore<Preferences>) : AppContainer {
 
     private val baseUrl = "https://api.weatherapi.com"
 
@@ -18,7 +28,7 @@ class DefaultAppContainer: AppContainer {
     private val retrofit = Retrofit
         .Builder()
         .addConverterFactory(
-                json.asConverterFactory("application/json".toMediaType())
+            json.asConverterFactory("application/json".toMediaType())
         )
         .baseUrl(baseUrl)
         .build()
@@ -26,15 +36,18 @@ class DefaultAppContainer: AppContainer {
     private val retrofitService: WeatherApiService by lazy {
         retrofit.create(WeatherApiService::class.java)
     }
+
+    /**
+     * implementation for [WeatherRepository]
+     */
     override val weatherRepository: WeatherRepository by lazy {
         NetworkWeatherRepository(retrofitService)
     }
-}
 
-//http://api.weatherapi.com
-// /v1/forecast.json?
-// key= 38573003d5d94892b0c85204241003
-// &q=London
-// &days=3
-// &aqi=no
-// &alerts=no
+    /**
+     * implementation for [SettingsRepository]
+     */
+    override val settingsRepository: SettingsRepository by lazy {
+        UserSettingsRepository(dataStore = dataStore)
+    }
+}
