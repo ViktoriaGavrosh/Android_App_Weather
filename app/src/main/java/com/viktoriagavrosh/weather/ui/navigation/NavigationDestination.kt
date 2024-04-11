@@ -1,6 +1,12 @@
 package com.viktoriagavrosh.weather.ui.navigation
 
+/**
+ * sealed class to describe the navigation destinations for the app
+ */
 sealed class NavigationDestination {
+    /**
+     * Unique name to define the path for a composable
+     */
     abstract val route: String
 
     data object CurrentWeatherDestination : NavigationDestination() {

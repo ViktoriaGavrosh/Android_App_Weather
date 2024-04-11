@@ -16,6 +16,9 @@ import com.viktoriagavrosh.weather.ui.screens.DetailsScreen
 import com.viktoriagavrosh.weather.ui.screens.ForecastScreen
 import com.viktoriagavrosh.weather.ui.screens.SettingsScreen
 
+/**
+ * Provides Navigation graph for the application
+ */
 @Composable
 fun WeatherNavHost(
     navController: NavHostController,

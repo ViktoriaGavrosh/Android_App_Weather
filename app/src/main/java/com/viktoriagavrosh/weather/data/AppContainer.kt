@@ -7,12 +7,18 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 
-
+/**
+ * App container for Dependency injection
+ */
 interface AppContainer {
     val weatherRepository: WeatherRepository
     val settingsRepository: SettingsRepository
 }
 
+/**
+ * [AppContainer] implementation that provides instances of [NetworkWeatherRepository] and
+ * [UserSettingsRepository]
+ */
 class DefaultAppContainer(dataStore: DataStore<Preferences>) : AppContainer {
 
     private val baseUrl = "https://api.weatherapi.com"
@@ -30,10 +36,17 @@ class DefaultAppContainer(dataStore: DataStore<Preferences>) : AppContainer {
     private val retrofitService: WeatherApiService by lazy {
         retrofit.create(WeatherApiService::class.java)
     }
+
+    /**
+     * implementation for [WeatherRepository]
+     */
     override val weatherRepository: WeatherRepository by lazy {
         NetworkWeatherRepository(retrofitService)
     }
 
+    /**
+     * implementation for [SettingsRepository]
+     */
     override val settingsRepository: SettingsRepository by lazy {
         UserSettingsRepository(dataStore = dataStore)
     }

@@ -17,6 +17,9 @@ import com.viktoriagavrosh.weather.ui.elements.curentweatherscreen.CurrentWeathe
 import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
+/**
+ * Composable to display screen with current weather
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CurrentWeatherScreen(

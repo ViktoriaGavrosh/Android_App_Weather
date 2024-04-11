@@ -6,6 +6,9 @@ import retrofit2.http.Query
 
 private const val API_KEY = "38573003d5d94892b0c85204241003"
 
+/**
+ * Service for work with API
+ */
 interface WeatherApiService {
     @GET("v1/forecast.json?")
     suspend fun getWeatherInfo(

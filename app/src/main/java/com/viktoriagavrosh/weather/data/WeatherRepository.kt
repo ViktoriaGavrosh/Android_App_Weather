@@ -4,10 +4,16 @@ import com.viktoriagavrosh.weather.model.apimodel.WeatherInfo
 import retrofit2.HttpException
 import java.io.IOException
 
+/**
+ * Repository that gets [WeatherInfo] from a given data source
+ */
 interface WeatherRepository {
     suspend fun getWeatherInfo(city: String): WeatherInfo
 }
 
+/**
+ * [WeatherRepository] implementation that provides functions for working with API
+ */
 class NetworkWeatherRepository(
     private val weatherApiService: WeatherApiService
 ) : WeatherRepository {

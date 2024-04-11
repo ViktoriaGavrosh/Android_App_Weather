@@ -16,6 +16,9 @@ import androidx.navigation.compose.rememberNavController
 import com.viktoriagavrosh.weather.ui.navigation.WeatherNavHost
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
+/**
+ * Top level composable that represents screens for the application
+ */
 @Composable
 fun WeatherApp(
     viewModel: WeatherViewModel = viewModel(factory = WeatherViewModel.Factory),

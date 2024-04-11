@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.weather.model.apimodel
 
+
 abstract class Weather {
     abstract val weatherCondition: WeatherCondition
     abstract val tempC: Double

@@ -18,6 +18,9 @@ import com.viktoriagavrosh.weather.ui.elements.forecastscreen.ForecastPager
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
 
+/**
+ * Composable to display screen with forecast (three days)
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ForecastScreen(

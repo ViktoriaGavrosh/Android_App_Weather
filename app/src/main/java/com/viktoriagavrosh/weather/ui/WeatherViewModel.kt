@@ -22,6 +22,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel to get and update item from the [WeatherRepository]'s and [SettingsRepository]'s data source
+ */
 class WeatherViewModel(
     private val application: WeatherApplication,
     private val weatherRepository: WeatherRepository,
@@ -52,6 +55,9 @@ class WeatherViewModel(
         }
     }
 
+    /**
+     * Update uiState (name of city)
+     */
     fun changeCity(city: String) {
         viewModelScope.launch {
             settingsRepository.saveCityPreferences(city)
@@ -59,12 +65,18 @@ class WeatherViewModel(
         updateWeatherInfo(city)
     }
 
+    /**
+     * Update settings value (isMusic)
+     */
     fun changeMusic(isMusic: Boolean) {
         viewModelScope.launch {
             settingsRepository.saveMusicPreferences(isMusic)
         }
     }
 
+    /**
+     * Update settings value (isCelsius)
+     */
     fun changeCelsius(temp: String) {
         val isCelsius = temp == "℃"
         viewModelScope.launch {
@@ -72,6 +84,9 @@ class WeatherViewModel(
         }
     }
 
+    /**
+     * Update settings value (wallpaperId)
+     */
     fun changeWallpaper(title: String) {
         val imageId = Wallpaper.valueOf(title).imageId
         viewModelScope.launch {

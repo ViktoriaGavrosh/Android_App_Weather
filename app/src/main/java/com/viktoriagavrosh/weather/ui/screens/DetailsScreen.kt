@@ -35,6 +35,9 @@ import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
 import com.viktoriagavrosh.weather.ui.theme.WeatherTheme
 
+/**
+ * Composable to display screen with details of day weather
+ */
 @Composable
 fun DetailsScreen(
     modifier: Modifier = Modifier,

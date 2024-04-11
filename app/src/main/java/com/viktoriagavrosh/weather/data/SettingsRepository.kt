@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
+/**
+ * Repository that save and get settings from a given data source
+ */
 interface SettingsRepository {
     val city: Flow<String>
     val isMusic:Flow<Boolean>
@@ -25,6 +28,9 @@ interface SettingsRepository {
     suspend fun saveWallpaperIdPreferences(wallpaperId: Int)
 }
 
+/**
+ * [SettingsRepository] implementation that provides functions for working with DataStore Preferences
+ */
 class UserSettingsRepository(
     private val dataStore: DataStore<Preferences>
 ) : SettingsRepository {

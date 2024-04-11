@@ -28,6 +28,9 @@ import com.viktoriagavrosh.weather.model.Wallpaper
 import com.viktoriagavrosh.weather.ui.elements.WeatherTopBar
 import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
 
+/**
+ * Composable to display screen with application settings
+ */
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,

@@ -3,8 +3,11 @@ package com.viktoriagavrosh.weather.model.apimodel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Serializable data class for JSON conversion
+ */
 @Serializable
-data class Hour(     // попроб наследов от CurrentWeather
+data class Hour(
     val time: String = "",
     @SerialName(value = "condition") override val weatherCondition: WeatherCondition = WeatherCondition(),
     @SerialName(value = "temp_c") override val tempC: Double = 0.0,
@@ -15,13 +18,13 @@ data class Hour(     // попроб наследов от CurrentWeather
     @SerialName(value = "wind_kph") override val windSpeedKm: Double = 0.0,
     @SerialName(value = "precip_mm") override val precipitationMm: Double = 0.0,
     @SerialName(value = "precip_in") override val precipitationInch: Double = 0.0,
-    override val humidity: Double = 0.0,    // Int?
+    override val humidity: Double = 0.0,
     @SerialName(value = "wind_dir") val windDirection: String = "",
     @SerialName(value = "gust_mph") val windGustMile: Double = 0.0,
     @SerialName(value = "gust_kph") val windGustKm: Double = 0.0,
     @SerialName(value = "pressure_mb") val pressureMb: Double = 0.0,
     @SerialName(value = "pressure_in") val pressureIn: Double = 0.0,
-    val cloud: Double = 0.0,       // Int?
+    val cloud: Double = 0.0,
     @SerialName(value = "vis_km") val visibleKm: Double = 0.0,
     @SerialName(value = "vis_miles") val visibleMile: Double = 0.0,
     @SerialName(value = "uv") val uvIndex: Double = 0.0
