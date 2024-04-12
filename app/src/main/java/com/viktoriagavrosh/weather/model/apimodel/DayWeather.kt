@@ -9,16 +9,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DayWeather(
     @SerialName(value = "condition") override val weatherCondition: WeatherCondition = WeatherCondition(),
-    @SerialName(value = "maxtemp_c") override val tempC: Double = 0.0,
-    @SerialName(value = "maxtemp_f") override val tempF: Double = 0.0,
-    @SerialName(value = "maxwind_mph") override val windSpeedMile: Double = 0.0,
-    @SerialName(value = "maxwind_kph") override val windSpeedKm: Double = 0.0,
-    @SerialName(value = "totalprecip_mm") override val precipitationMm: Double = 0.0,
-    @SerialName(value = "totalprecip_in") override val precipitationInch: Double = 0.0,
-    @SerialName(value = "avghumidity") override val humidity: Double = 0.0,
-    @SerialName(value = "avgvis_km") val visibleKm: Double = 0.0,
-    @SerialName(value = "vis_miles") val visibleMile: Double = 0.0,
-    @SerialName(value = "daily_chance_of_rain") val rainChance: Double = 0.0,
-    @SerialName(value = "daily_chance_of_snow") val snowChance: Double = 0.0,
-    @SerialName(value = "uv") val uvIndex: Double = 0.0
-) : Weather()
+    @SerialName(value = "maxtemp_c") private val tempCApi: Double = 0.0,
+    @SerialName(value = "maxtemp_f") private val tempFApi: Double = 0.0,
+    @SerialName(value = "maxwind_mph") private val windSpeedMileApi: Double = 0.0,
+    @SerialName(value = "maxwind_kph") private val windSpeedKmApi: Double = 0.0,
+    @SerialName(value = "totalprecip_mm") private val precipitationMmApi: Double = 0.0,
+    @SerialName(value = "totalprecip_in") private val precipitationInchApi: Double = 0.0,
+    @SerialName(value = "avghumidity") private val humidityApi: Double = 0.0,
+    @SerialName(value = "avgvis_km") private val visibleKmApi: Double = 0.0,
+    @SerialName(value = "vis_miles") private val visibleMileApi: Double = 0.0,
+    @SerialName(value = "uv") private val uvIndexApi: Double = 0.0
+) : Weather() {
+    override val tempC = "${tempCApi.toInt()} ℃"
+    override val tempF = "${tempFApi.toInt()} ℉"
+    override val windSpeedMile = "${windSpeedMileApi.toInt()} mph"
+    override val windSpeedKm = "${windSpeedKmApi.toInt()} km/h"
+    override val precipitationMm = "$precipitationMmApi mm"
+    override val precipitationInch = "$precipitationInchApi in"
+    override val humidityPercent = "${humidityApi.toInt()} %"
+    val visibleKm = "${visibleKmApi.toInt()} km"
+    val visibleMile = "${visibleMileApi.toInt()} mi"
+    val uVIndex = "${uvIndexApi.toInt()}"
+}
