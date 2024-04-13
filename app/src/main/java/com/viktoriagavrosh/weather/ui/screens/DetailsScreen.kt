@@ -43,6 +43,7 @@ fun DetailsScreen(
     modifier: Modifier = Modifier,
     weatherInfo: WeatherInfo,
     dateSelectedDay: String,
+    isCelsius: Boolean,
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
@@ -52,20 +53,36 @@ fun DetailsScreen(
             weatherInfo = weatherInfo,
             weather = currentWeather,
             isCurrentWeather = true,
-            windList = listOf(
-                stringResource(id = R.string.wind, currentWeather.windSpeedKm.toInt()),
-                stringResource(R.string.wind_gust, currentWeather.windGustKm.toInt()),
+            windList = if (isCelsius) {
+                listOf(
+                    stringResource(id = R.string.wind, currentWeather.windSpeedKm),
+                    stringResource(R.string.wind_gust, currentWeather.windGustKm),
+                    stringResource(R.string.wind_direction, currentWeather.windDirection)
+                )
+            } else listOf(
+                stringResource(id = R.string.wind, currentWeather.windSpeedMile),
+                stringResource(R.string.wind_gust, currentWeather.windGustMile),
                 stringResource(R.string.wind_direction, currentWeather.windDirection)
             ),
-            detailsList = listOf(
-                stringResource(id = R.string.precipitation, currentWeather.precipitationMm),
-                stringResource(id = R.string.humidity, currentWeather.humidity.toInt()),
-                stringResource(R.string.cloudy, currentWeather.cloud.toInt()),
-                stringResource(id = R.string.pressure, currentWeather.pressureMm.toInt()),
-                stringResource(R.string.visibility, currentWeather.visibleKm.toInt()),
-                stringResource(R.string.uv_index, currentWeather.uvIndex.toInt())
+            detailsList = if (isCelsius) {
+                listOf(
+                    stringResource(id = R.string.precipitation, currentWeather.precipitationMm),
+                    stringResource(id = R.string.humidity, currentWeather.humidityPercent),
+                    stringResource(R.string.cloudy, currentWeather.cloudy),
+                    stringResource(id = R.string.pressure, currentWeather.pressureMm),
+                    stringResource(R.string.visibility, currentWeather.visibleKm),
+                    stringResource(R.string.uv_index, currentWeather.uVIndex)
+                )
+            } else listOf(
+                stringResource(id = R.string.precipitation, currentWeather.precipitationInch),
+                stringResource(id = R.string.humidity, currentWeather.humidityPercent),
+                stringResource(R.string.cloudy, currentWeather.cloudy),
+                stringResource(id = R.string.pressure, currentWeather.pressureIn),
+                stringResource(R.string.visibility, currentWeather.visibleMile),
+                stringResource(R.string.uv_index, currentWeather.uVIndex)
             ),
             topBarTitle = stringResource(id = R.string.now),
+            isCelsius = isCelsius,
             onBackClick = onBackClick,
             onSettingsClick = onSettingsClick,
             modifier = modifier
@@ -78,15 +95,25 @@ fun DetailsScreen(
             weatherInfo = weatherInfo,
             weather = dayWeather,
             isCurrentWeather = false,
-            windList = listOf(stringResource(id = R.string.wind, dayWeather.windSpeedKm.toInt())),
-            detailsList = listOf(
-                stringResource(id = R.string.precipitation, dayWeather.precipitationMm),
-                stringResource(id = R.string.humidity, dayWeather.humidity.toInt()),
-                stringResource(R.string.visibility, dayWeather.visibleKm.toInt()),
-                stringResource(R.string.uv_index, dayWeather.uvIndex.toInt())
+            windList = if (isCelsius) {
+                listOf(stringResource(id = R.string.wind, dayWeather.windSpeedKm))
+            } else listOf(stringResource(id = R.string.wind, dayWeather.windSpeedMile)),
+            detailsList = if (isCelsius) {
+                listOf(
+                    stringResource(id = R.string.precipitation, dayWeather.precipitationMm),
+                    stringResource(id = R.string.humidity, dayWeather.humidityPercent),
+                    stringResource(R.string.visibility, dayWeather.visibleKm),
+                    stringResource(R.string.uv_index, dayWeather.uVIndex)
+                )
+            } else listOf(
+                stringResource(id = R.string.precipitation, dayWeather.precipitationInch),
+                stringResource(id = R.string.humidity, dayWeather.humidityPercent),
+                stringResource(R.string.visibility, dayWeather.visibleMile),
+                stringResource(R.string.uv_index, dayWeather.uVIndex)
             ),
             dayAstro = selectedDay?.dayAstro ?: DayAstro(),
             topBarTitle = selectedDay?.date ?: "",
+            isCelsius = isCelsius,
             onBackClick = onBackClick,
             onSettingsClick = onSettingsClick,
             modifier = modifier
@@ -101,6 +128,7 @@ private fun DetailScreenContent(
     onBackClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
     topBarTitle: String,
+    isCelsius: Boolean,
     weather: Weather,
     dayAstro: DayAstro = DayAstro(),
     isCurrentWeather: Boolean,
@@ -122,14 +150,18 @@ private fun DetailScreenContent(
         MainCard(
             condition = weather.weatherCondition.condition,
             iconUri = weather.weatherCondition.iconUri,
-            temp = weather.tempC
+            temp = if (isCelsius) weather.tempC else weather.tempF
         )
         if (isCurrentWeather) {
             DetailsCard(
                 detailsList = listOf(
                     stringResource(
                         id = R.string.feels_like,
-                        weatherInfo.currentWeather.feelsLikeTempC.toInt()
+                        if (isCelsius) {
+                            weatherInfo.currentWeather.feelsLikeTempC
+                        } else {
+                            weatherInfo.currentWeather.feelsLikeTempF
+                        }
                     )
                 ), modifier = Modifier.fillMaxWidth()
             )
@@ -151,7 +183,10 @@ private fun DetailScreenContent(
 
 @Composable
 private fun MainCard(
-    modifier: Modifier = Modifier, condition: String, iconUri: String, temp: Double
+    modifier: Modifier = Modifier,
+    condition: String,
+    iconUri: String,
+    temp: String
 ) {
     Card(
         modifier = modifier
@@ -185,7 +220,7 @@ private fun MainCard(
 
 @Composable
 private fun TempColumn(
-    modifier: Modifier = Modifier, temp: Double, condition: String
+    modifier: Modifier = Modifier, temp: String, condition: String
 ) {
     Column(
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
@@ -196,7 +231,7 @@ private fun TempColumn(
             modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_small))
         )
         Text(
-            text = stringResource(id = R.string.value_temp_c, temp.toInt()),
+            text = temp,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.displayLarge,
             modifier = Modifier
@@ -330,6 +365,7 @@ fun DetailsScreenPreview() {
     WeatherTheme {
         DetailsScreen(
             weatherInfo = WeatherInfo(),
+            isCelsius = true,
             dateSelectedDay = ""
         )
     }

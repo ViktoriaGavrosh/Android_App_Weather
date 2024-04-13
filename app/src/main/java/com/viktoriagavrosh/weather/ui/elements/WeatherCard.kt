@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +29,7 @@ fun WeatherCard(
     modifier: Modifier = Modifier,
     condition: String,
     iconUri: String,
-    temp: Double,
+    temp: String,
     paddingValues: PaddingValues = PaddingValues(0.dp),
     isTransparentBackground: Boolean = false
 ) {
@@ -56,7 +55,7 @@ fun WeatherCard(
                 modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_large))
             )
             Text(
-                text = stringResource(id = R.string.value_temp_c, temp.toInt()),
+                text = temp,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.displayLarge,
                 modifier = Modifier
@@ -83,7 +82,7 @@ fun WeatherCardPreview() {
         WeatherCard(
             condition = "Condition",
             iconUri = "",
-            temp = 10.6
+            temp = "10 ℃"
         )
     }
 }

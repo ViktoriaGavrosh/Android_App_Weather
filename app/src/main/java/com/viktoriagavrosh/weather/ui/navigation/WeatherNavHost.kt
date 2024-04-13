@@ -47,6 +47,7 @@ fun WeatherNavHost(
                     },
                     weatherInfo = uiState,
                     city = uiState.location.cityName,
+                    isCelsius = isCelsiusState.value,
                     onCityChangeClick = viewModel::changeCity,
                     onSettingsClick = { navController.navigate(NavigationDestination.SettingsDestination.route) }
                 )
@@ -62,6 +63,7 @@ fun WeatherNavHost(
                 ForecastScreen(
                     days = uiState.forecast.days,
                     dateSelectedDay = dateSelectedDay ?: "",
+                    isCelsius = isCelsiusState.value,
                     onDetailsClick = { weatherDate ->
                         navController.navigate("${NavigationDestination.DetailsDestination.route}/{${weatherDate}}")
                     },
@@ -81,6 +83,7 @@ fun WeatherNavHost(
                 DetailsScreen(
                     weatherInfo = uiState,
                     dateSelectedDay = dateSelectedDay ?: "",
+                    isCelsius = isCelsiusState.value,
                     onBackClick = { navController.popBackStack() },
                     onSettingsClick = { navController.navigate(NavigationDestination.SettingsDestination.route) }
                 )

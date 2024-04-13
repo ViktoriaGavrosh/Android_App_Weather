@@ -9,24 +9,40 @@ import kotlinx.serialization.Serializable
 @Serializable
 class CurrentWeather(
     @SerialName(value = "condition") override val weatherCondition: WeatherCondition = WeatherCondition(),
-    @SerialName(value = "temp_c") override val tempC: Double = 0.0,
-    @SerialName(value = "temp_f") override val tempF: Double = 0.0,
-    @SerialName(value = "wind_mph") override val windSpeedMile: Double = 0.0,
-    @SerialName(value = "wind_kph") override val windSpeedKm: Double = 0.0,
-    @SerialName(value = "precip_mm") override val precipitationMm: Double = 0.0,
-    @SerialName(value = "precip_in") override val precipitationInch: Double = 0.0,
-    override val humidity: Double = 0.0,
-    @SerialName(value = "feelslike_c") val feelsLikeTempC: Double = 0.0,
-    @SerialName(value = "feelslike_f") val feelsLikeTempF: Double = 0.0,
-    val cloud: Double = 0.0,
     @SerialName(value = "wind_dir") val windDirection: String = "",
-    @SerialName(value = "gust_mph") val windGustMile: Double = 0.0,
-    @SerialName(value = "gust_kph") val windGustKm: Double = 0.0,
-    @SerialName(value = "pressure_in") val pressureIn: Double = 0.0,
-    @SerialName(value = "vis_km") val visibleKm: Double = 0.0,
-    @SerialName(value = "vis_miles") val visibleMile: Double = 0.0,
-    @SerialName(value = "uv") val uvIndex: Double = 0.0,
-    @SerialName(value = "pressure_mb") private val pressureMb: Double = 0.0
+    @SerialName(value = "temp_c") private val tempCApi: Double = 0.0,
+    @SerialName(value = "temp_f") private val tempFApi: Double = 0.0,
+    @SerialName(value = "wind_mph") private val windSpeedMileApi: Double = 0.0,
+    @SerialName(value = "wind_kph") private val windSpeedKmApi: Double = 0.0,
+    @SerialName(value = "precip_mm") private val precipitationMmApi: Double = 0.0,
+    @SerialName(value = "precip_in") private val precipitationInchApi: Double = 0.0,
+    @SerialName(value = "humidity") private val humidityApi: Double = 0.0,
+    @SerialName(value = "feelslike_c") private val feelsLikeTempCApi: Double = 0.0,
+    @SerialName(value = "feelslike_f") private val feelsLikeTempFApi: Double = 0.0,
+    @SerialName(value = "cloud") private val cloudApi: Double = 0.0,
+    @SerialName(value = "gust_mph") private val windGustMileApi: Double = 0.0,
+    @SerialName(value = "gust_kph") private val windGustKmApi: Double = 0.0,
+    @SerialName(value = "pressure_mb") private val pressureMb: Double = 0.0,
+    @SerialName(value = "pressure_in") private val pressureInApi: Double = 0.0,
+    @SerialName(value = "vis_km") private val visibleKmApi: Double = 0.0,
+    @SerialName(value = "vis_miles") private val visibleMileApi: Double = 0.0,
+    @SerialName(value = "uv") private val uvIndexApi: Double = 0.0
 ) : Weather() {
-    val pressureMm = pressureMb * 0.75
+    override val tempC = "${tempCApi.toInt()} ℃"
+    override val tempF = "${tempFApi.toInt()} ℉"
+    override val windSpeedMile = "${windSpeedMileApi.toInt()} mph"
+    override val windSpeedKm = "${windSpeedKmApi.toInt()} km/h"
+    override val precipitationMm = "$precipitationMmApi mm"
+    override val precipitationInch = "$precipitationInchApi in"
+    override val humidityPercent = "${humidityApi.toInt()} %"
+    val pressureMm = "${(pressureMb * 0.75).toInt()} mmHg"
+    val pressureIn = "${pressureInApi.toInt()} inHg"
+    val visibleKm = "${visibleKmApi.toInt()} km"
+    val visibleMile = "${visibleMileApi.toInt()} mi"
+    val windGustMile = "${windGustMileApi.toInt()} mph"
+    val windGustKm = "${windGustKmApi.toInt()} km/h"
+    val uVIndex = "${uvIndexApi.toInt()}"
+    val cloudy = "${cloudApi.toInt()} %"
+    val feelsLikeTempC = "${feelsLikeTempCApi.toInt()} ℃"
+    val feelsLikeTempF = "${feelsLikeTempFApi.toInt()} ℉"
 }
