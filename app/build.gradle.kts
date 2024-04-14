@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+    testImplementation(libs.jetbrains.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -85,3 +86,5 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.androidx.lifecycle.runtime.compose)
 }
+
+

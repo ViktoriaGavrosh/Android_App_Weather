@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -127,16 +128,17 @@ private fun ButtonsColumn(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        days.forEach {
+        days.forEachIndexed { index, day ->
             Button(
-                onClick = { onForecastClick(it.date) },
+                onClick = { onForecastClick(day.date) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant
                 ),
                 modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_extra_large))
+                    .testTag("Button $index")
             ) {
                 Text(
-                    text = it.date,
+                    text = day.date,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.padding_medium))
                 )
