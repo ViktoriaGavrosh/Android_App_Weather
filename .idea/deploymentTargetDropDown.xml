@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="WeatherNavHostTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -17,6 +20,18 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-04-07T15:17:35.882062100Z" />
         </State>
+      </entry>
+      <entry key="weatherNavHost_clickBackOnSettingsScreen_navigateToDetailScreen()">
+        <State />
+      </entry>
+      <entry key="weatherNavHost_clickBackOnSettingsScreen_navigateToForecastScreen()">
+        <State />
+      </entry>
+      <entry key="weatherNavHost_clickSecondDay_navigateToForecastScreen()">
+        <State />
+      </entry>
+      <entry key="weatherNavHost_clickThirdDay_navigateToForecastScreen()">
+        <State />
       </entry>
     </value>
   </component>

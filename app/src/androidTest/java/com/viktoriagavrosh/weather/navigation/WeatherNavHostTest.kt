@@ -48,6 +48,22 @@ class WeatherNavHostTest {
     }
 
     @Test
+    fun weatherNavHost_clickSecondDay_navigateToForecastScreen() {
+        composeTestRule.onNodeWithStringId(R.string.forecast).performClick()
+        composeTestRule.onNodeWithTag("Button 1").performClick()
+        navController
+            .assertCurrentRouteName("${NavigationDestination.ForecastDestination.route}/{itemId}")
+    }
+
+    @Test
+    fun weatherNavHost_clickThirdDay_navigateToForecastScreen() {
+        composeTestRule.onNodeWithStringId(R.string.forecast).performClick()
+        composeTestRule.onNodeWithTag("Button 2").performClick()
+        navController
+            .assertCurrentRouteName("${NavigationDestination.ForecastDestination.route}/{itemId}")
+    }
+
+    @Test
     fun weatherNavHost_clickDetailButtonOnCurrentWeatherScreen_navigateToDetailScreen() {
         navigateToDetailsScreen()
         navController
