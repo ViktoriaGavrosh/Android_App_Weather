@@ -92,9 +92,9 @@ fun WeatherNavHost(
             }
             composable(route = NavigationDestination.SettingsDestination.route) {
                 SettingsScreen(
-                    isMusicState = isMusicState,
-                    isCelsiusState = isCelsiusState,
-                    wallpaperIdState = wallpaperIdState,
+                    isMusic = isMusicState.value,
+                    isCelsius = isCelsiusState.value,
+                    wallpaperId = wallpaperIdState.value,
                     onMusicClick = viewModel::changeMusic,
                     onCelsiusClick = viewModel::changeCelsius,
                     onWallpaperClick = viewModel::changeWallpaper,

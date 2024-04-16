@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.weather.fake
 
+import com.viktoriagavrosh.weather.model.Wallpaper
 import com.viktoriagavrosh.weather.model.apimodel.CurrentWeather
 import com.viktoriagavrosh.weather.model.apimodel.Day
 import com.viktoriagavrosh.weather.model.apimodel.Forecast
@@ -20,6 +21,10 @@ object FakeDataSource {
     private const val humidity = 3.0
     private const val presMb = 1.0
     private const val presIn = 2.0
+
+    const val isMusic = true
+    const val isCelsius = true
+    val wallpaperId = Wallpaper.CLOUDY.imageId
 
     val days = List<Day>(3) { Day(date = "${it + 1}") }
 

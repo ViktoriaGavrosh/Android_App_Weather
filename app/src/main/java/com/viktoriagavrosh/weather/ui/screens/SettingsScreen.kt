@@ -1,5 +1,6 @@
 package com.viktoriagavrosh.weather.ui.screens
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,9 +18,9 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -34,9 +35,9 @@ import com.viktoriagavrosh.weather.ui.navigation.NavigationDestination
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
-    isMusicState: State<Boolean>,
-    isCelsiusState: State<Boolean>,
-    wallpaperIdState: State<Int>,
+    isMusic: Boolean,
+    isCelsius: Boolean,
+    @DrawableRes wallpaperId: Int,
     onMusicClick: (Boolean) -> Unit,
     onCelsiusClick: (String) -> Unit,
     onWallpaperClick: (String) -> Unit,
@@ -46,7 +47,7 @@ fun SettingsScreen(
         stringResource(R.string.temp_c),
         stringResource(R.string.temp_f)
     )
-    val wallpaper = Wallpaper.entries.first { it.imageId == wallpaperIdState.value }
+    val wallpaper = Wallpaper.entries.first { it.imageId == wallpaperId }
     Column(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.padding_small))
@@ -59,14 +60,14 @@ fun SettingsScreen(
         )
         MusicCard(
             text = stringResource(R.string.music),
-            isMusic = isMusicState.value,
+            isMusic = isMusic,
             onMusicClick = onMusicClick,
             modifier = Modifier.fillMaxWidth()
         )
         SettingsRadioButton(
             title = stringResource(R.string.temperature),
             listText = listTemp,
-            selectedButton = if (isCelsiusState.value) listTemp[0] else listTemp[1],
+            selectedButton = if (isCelsius) listTemp[0] else listTemp[1],
             onButtonClick = onCelsiusClick,
             modifier = Modifier.fillMaxWidth()
         )
@@ -105,6 +106,7 @@ private fun MusicCard(
             Switch(
                 checked = isMusic,
                 onCheckedChange = { onMusicClick(!isMusic) },
+                modifier = Modifier.testTag(stringResource(R.string.music_switch)),
                 thumbContent = {
                     Icon(
                         imageVector = Icons.Default.Check,
