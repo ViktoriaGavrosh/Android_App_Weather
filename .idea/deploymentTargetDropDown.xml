@@ -18,19 +18,19 @@
           <timeTargetWasSelectedWithDropDown value="2024-04-07T15:17:35.882062100Z" />
         </State>
       </entry>
-      <entry key="settingsScreen_musicHasNoClick()">
+      <entry key="settingsScreen_skyRadioButtonHasClick()">
         <State />
       </entry>
-      <entry key="settingsScreen_musicSwitchEnabled()">
+      <entry key="settingsScreen_skyRadioButtonNotSelected()">
         <State />
       </entry>
-      <entry key="settingsScreen_musicSwitchHasClick()">
+      <entry key="settingsScreen_sunnyRadioButtonDisplayed()">
         <State />
       </entry>
-      <entry key="settingsScreen_temperatureHasNoClick()">
+      <entry key="settingsScreen_sunnyRadioButtonHasClick()">
         <State />
       </entry>
-      <entry key="settingsScreen_wallpaperHasNoClick()">
+      <entry key="settingsScreen_sunnyRadioButtonNotSelected()">
         <State />
       </entry>
     </value>
