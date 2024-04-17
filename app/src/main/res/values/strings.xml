@@ -33,4 +33,6 @@
     <string name="rise">rise</string>
     <string name="set">set</string>
     <string name="music_switch">Music switch</string>
+    <string name="date_or_time">date or time</string>
+    <string name="icon_description">Hour weather is %1s</string>
 </resources>

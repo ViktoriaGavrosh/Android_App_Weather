@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.weather.ui.current
+package com.viktoriagavrosh.weather.ui.currentscreen
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertHasClickAction

@@ -18,19 +18,19 @@
           <timeTargetWasSelectedWithDropDown value="2024-04-07T15:17:35.882062100Z" />
         </State>
       </entry>
-      <entry key="settingsScreen_skyRadioButtonHasClick()">
+      <entry key="forecastScreenMainCard_day_buttonNotDisplayed()">
         <State />
       </entry>
-      <entry key="settingsScreen_skyRadioButtonNotSelected()">
+      <entry key="forecastScreen_celsius_tempDisplayed()">
         <State />
       </entry>
-      <entry key="settingsScreen_sunnyRadioButtonDisplayed()">
+      <entry key="forecastScreen_celsius_tempHasNoClick()">
         <State />
       </entry>
-      <entry key="settingsScreen_sunnyRadioButtonHasClick()">
+      <entry key="forecastScreen_celsius_windDisplayed()">
         <State />
       </entry>
-      <entry key="settingsScreen_sunnyRadioButtonNotSelected()">
+      <entry key="forecastScreen_celsius_windHasNoClick()">
         <State />
       </entry>
     </value>
