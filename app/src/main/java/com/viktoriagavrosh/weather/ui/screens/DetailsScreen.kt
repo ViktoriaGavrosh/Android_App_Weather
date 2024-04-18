@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -349,7 +350,12 @@ private fun AstroDetailRow(
             } else {
                 painterResource(id = R.drawable.ic_down)
             },
-            contentDescription = if (isUp) stringResource(R.string.rise) else stringResource(R.string.set)
+            contentDescription = if (isUp) {
+                stringResource(R.string.up)
+            } else {
+                stringResource(R.string.down)
+            },
+            modifier = Modifier.testTag(text)
         )
         Text(
             text = text,

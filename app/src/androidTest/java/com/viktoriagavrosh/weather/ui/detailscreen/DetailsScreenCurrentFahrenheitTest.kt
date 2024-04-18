@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.weather.ui.currentscreen
+package com.viktoriagavrosh.weather.ui.detailscreen
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertHasNoClickAction
@@ -7,42 +7,41 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.fake.FakeDataSource
-import com.viktoriagavrosh.weather.ui.screens.CurrentWeatherScreen
+import com.viktoriagavrosh.weather.ui.screens.DetailsScreen
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class CurrentWeatherScreenFahrenheitTest {
+class DetailsScreenCurrentFahrenheitTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Before
-    fun launchCurrentScreen() {
+    fun launchDetailScreen() {
         composeTestRule.setContent {
-            CurrentWeatherScreen(
-                city = "FakeCity",
+            DetailsScreen(
                 weatherInfo = FakeDataSource.fakeWeatherInfo,
-                isCelsius = false,
-                onDetailsClick = {}
+                dateSelectedDay = "",
+                isCelsius = false
             )
         }
     }
 
     @Test
-    fun currentScreen_mainCardFahrenheit_tempDisplayed() {
-        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.currentWeather.tempF)
-            .assertIsDisplayed()
+    fun detailsScreenCurrent_fahrenheit_tempDisplayed() {
+        val text = FakeDataSource.fakeWeatherInfo.currentWeather.tempF
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
-    fun currentScreen_mainCardFahrenheit_tempHasNoClick() {
-        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.currentWeather.tempF)
-            .assertHasNoClickAction()
+    fun detailsScreenCurrent_fahrenheit_tempHasNoClick() {
+        val text = FakeDataSource.fakeWeatherInfo.currentWeather.tempF
+        composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
 
     @Test
-    fun currentScreen_fahrenheit_FeelsLikeTempDisplayed() {
+    fun detailsScreenCurrent_fahrenheit_feelsLikeDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.feels_like,
             FakeDataSource.fakeWeatherInfo.currentWeather.feelsLikeTempF
@@ -51,7 +50,7 @@ class CurrentWeatherScreenFahrenheitTest {
     }
 
     @Test
-    fun currentScreen_fahrenheit_FeelsLikeTempHasNoClick() {
+    fun detailsScreenCurrent_fahrenheit_feelsLikeHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.feels_like,
             FakeDataSource.fakeWeatherInfo.currentWeather.feelsLikeTempF
@@ -60,7 +59,7 @@ class CurrentWeatherScreenFahrenheitTest {
     }
 
     @Test
-    fun currentScreen_fahrenheit_windDisplayed() {
+    fun detailsScreenCurrent_fahrenheit_windDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.wind,
             FakeDataSource.fakeWeatherInfo.currentWeather.windSpeedMile
@@ -69,7 +68,7 @@ class CurrentWeatherScreenFahrenheitTest {
     }
 
     @Test
-    fun currentScreen_fahrenheit_windHasNoClick() {
+    fun detailsScreenCurrent_fahrenheit_windHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.wind,
             FakeDataSource.fakeWeatherInfo.currentWeather.windSpeedMile
@@ -78,7 +77,25 @@ class CurrentWeatherScreenFahrenheitTest {
     }
 
     @Test
-    fun currentScreen_fahrenheit_precipitationDisplayed() {
+    fun detailsScreenCurrent_fahrenheit_windGustDisplayed() {
+        val text = composeTestRule.activity.getString(
+            R.string.wind_gust,
+            FakeDataSource.fakeWeatherInfo.currentWeather.windGustMile
+        )
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun detailsScreenCurrent_fahrenheit_windGustHasNoClick() {
+        val text = composeTestRule.activity.getString(
+            R.string.wind_gust,
+            FakeDataSource.fakeWeatherInfo.currentWeather.windGustMile
+        )
+        composeTestRule.onNodeWithText(text).assertHasNoClickAction()
+    }
+
+    @Test
+    fun detailsScreenCurrent_fahrenheit_precipitationDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.precipitation,
             FakeDataSource.fakeWeatherInfo.currentWeather.precipitationInch
@@ -87,7 +104,7 @@ class CurrentWeatherScreenFahrenheitTest {
     }
 
     @Test
-    fun currentScreen_fahrenheit_precipitationHasNoClick() {
+    fun detailsScreenCurrent_fahrenheit_precipitationHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.precipitation,
             FakeDataSource.fakeWeatherInfo.currentWeather.precipitationInch
@@ -96,7 +113,7 @@ class CurrentWeatherScreenFahrenheitTest {
     }
 
     @Test
-    fun currentScreen_fahrenheit_pressureDisplayed() {
+    fun detailsScreenCurrent_fahrenheit_pressureDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.pressure,
             FakeDataSource.fakeWeatherInfo.currentWeather.pressureIn
@@ -105,10 +122,28 @@ class CurrentWeatherScreenFahrenheitTest {
     }
 
     @Test
-    fun currentScreen_fahrenheit_pressureHasNoClick() {
+    fun detailsScreenCurrent_fahrenheit_pressureHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.pressure,
             FakeDataSource.fakeWeatherInfo.currentWeather.pressureIn
+        )
+        composeTestRule.onNodeWithText(text).assertHasNoClickAction()
+    }
+
+    @Test
+    fun detailsScreenCurrent_fahrenheit_visibilityDisplayed() {
+        val text = composeTestRule.activity.getString(
+            R.string.visibility,
+            FakeDataSource.fakeWeatherInfo.currentWeather.visibleMile
+        )
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun detailsScreenCurrent_fahrenheit_visibilityHasNoClick() {
+        val text = composeTestRule.activity.getString(
+            R.string.visibility,
+            FakeDataSource.fakeWeatherInfo.currentWeather.visibleMile
         )
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }

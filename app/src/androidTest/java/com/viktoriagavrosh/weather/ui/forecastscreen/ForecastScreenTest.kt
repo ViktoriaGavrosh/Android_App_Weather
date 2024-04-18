@@ -25,8 +25,8 @@ class ForecastScreenTest {
     fun launchForecastScreen() {
         composeTestRule.setContent {
             ForecastScreen(
-                days = FakeDataSource.daysForForecastScreen,
-                dateSelectedDay = FakeDataSource.daysForForecastScreen[0].date,
+                days = FakeDataSource.fakeWeatherInfo.forecast.days,
+                dateSelectedDay = FakeDataSource.fakeWeatherInfo.forecast.days[0].date,
                 isCelsius = true,
                 onDetailsClick = {}
             )
@@ -69,7 +69,7 @@ class ForecastScreenTest {
 
     @Test
     fun forecastScreen_firstTabDisplayed() {
-        val tag = FakeDataSource.daysForForecastScreen[0].date
+        val tag = FakeDataSource.fakeWeatherInfo.forecast.days[0].date
             .substringAfter("-")
             .replace("-", "/")
         composeTestRule.onNodeWithTag(tag).assertIsDisplayed()
@@ -77,7 +77,7 @@ class ForecastScreenTest {
 
     @Test
     fun forecastScreen_firstTabHasClick() {
-        val tag = FakeDataSource.daysForForecastScreen[0].date
+        val tag = FakeDataSource.fakeWeatherInfo.forecast.days[0].date
             .substringAfter("-")
             .replace("-", "/")
         composeTestRule.onNodeWithTag(tag).assertHasClickAction()
@@ -85,7 +85,7 @@ class ForecastScreenTest {
 
     @Test
     fun forecastScreen_secondTabDisplayed() {
-        val tag = FakeDataSource.daysForForecastScreen[1].date
+        val tag = FakeDataSource.fakeWeatherInfo.forecast.days[1].date
             .substringAfter("-")
             .replace("-", "/")
         composeTestRule.onNodeWithTag(tag).assertIsDisplayed()
@@ -93,7 +93,7 @@ class ForecastScreenTest {
 
     @Test
     fun forecastScreen_secondTabHasClick() {
-        val tag = FakeDataSource.daysForForecastScreen[1].date
+        val tag = FakeDataSource.fakeWeatherInfo.forecast.days[1].date
             .substringAfter("-")
             .replace("-", "/")
         composeTestRule.onNodeWithTag(tag).assertHasClickAction()
@@ -101,7 +101,7 @@ class ForecastScreenTest {
 
     @Test
     fun forecastScreen_thirdTabDisplayed() {
-        val tag = FakeDataSource.daysForForecastScreen[2].date
+        val tag = FakeDataSource.fakeWeatherInfo.forecast.days[2].date
             .substringAfter("-")
             .replace("-", "/")
         composeTestRule.onNodeWithTag(tag).assertIsDisplayed()
@@ -109,7 +109,7 @@ class ForecastScreenTest {
 
     @Test
     fun forecastScreen_thirdTabHasClick() {
-        val tag = FakeDataSource.daysForForecastScreen[2].date
+        val tag = FakeDataSource.fakeWeatherInfo.forecast.days[2].date
             .substringAfter("-")
             .replace("-", "/")
         composeTestRule.onNodeWithTag(tag).assertHasClickAction()
@@ -117,14 +117,14 @@ class ForecastScreenTest {
 
     @Test
     fun forecastScreen_HourCard_timeDisplayed() {
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].time.substringAfter(" ")
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].time.substringAfter(" ")
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     // time has click, because HourCard has click
     @Test
     fun forecastScreen_hourCard_timeHasNoClick() {
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].time.substringAfter(" ")
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].time.substringAfter(" ")
         composeTestRule.onNodeWithText(text).assertHasClickAction()
     }
 
@@ -132,7 +132,7 @@ class ForecastScreenTest {
     fun forecastScreen_hourCard_iconDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.icon_description,
-            FakeDataSource.daysForForecastScreen[0].hours[0].weatherCondition.condition
+            FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].weatherCondition.condition
             )
         composeTestRule.onNodeWithContentDescription(text).assertIsDisplayed()
     }

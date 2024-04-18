@@ -35,4 +35,6 @@
     <string name="music_switch">Music switch</string>
     <string name="date_or_time">date or time</string>
     <string name="icon_description">Hour weather is %1s</string>
+    <string name="up">up</string>
+    <string name="down">down</string>
 </resources>

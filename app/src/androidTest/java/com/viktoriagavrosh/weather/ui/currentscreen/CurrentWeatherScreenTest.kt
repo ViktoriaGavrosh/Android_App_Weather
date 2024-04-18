@@ -25,7 +25,7 @@ class CurrentWeatherScreenTest {
         composeTestRule.setContent {
             CurrentWeatherScreen(
                 city = "FakeCity",
-                weatherInfo = FakeDataSource.weatherInfoForCurrentScreen,
+                weatherInfo = FakeDataSource.fakeWeatherInfo,
                 isCelsius = true,
                 onDetailsClick = {}
             )
@@ -106,7 +106,7 @@ class CurrentWeatherScreenTest {
     fun currentScreen_humidityDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.humidity,
-            FakeDataSource.weatherInfoForCurrentScreen.currentWeather.humidityPercent
+            FakeDataSource.fakeWeatherInfo.currentWeather.humidityPercent
         )
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
@@ -115,7 +115,7 @@ class CurrentWeatherScreenTest {
     fun currentScreen_humidityHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.humidity,
-            FakeDataSource.weatherInfoForCurrentScreen.currentWeather.humidityPercent
+            FakeDataSource.fakeWeatherInfo.currentWeather.humidityPercent
         )
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
@@ -135,38 +135,44 @@ class CurrentWeatherScreenTest {
     @Test
     fun currentScreen_forecastTab_firstButtonDisplayed() {
         navigateToForecastTab()
-        composeTestRule.onNodeWithText(FakeDataSource.days[0].date).assertIsDisplayed()
+        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.forecast.days[0].date)
+            .assertIsDisplayed()
     }
 
     @Test
     fun currentScreen_forecastTab_firstButtonHasClick() {
         navigateToForecastTab()
-        composeTestRule.onNodeWithText(FakeDataSource.days[0].date).assertHasClickAction()
+        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.forecast.days[0].date)
+            .assertHasClickAction()
     }
 
     @Test
     fun currentScreen_forecastTab_secondButtonDisplayed() {
         navigateToForecastTab()
-        composeTestRule.onNodeWithText(FakeDataSource.days[1].date).assertIsDisplayed()
+        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.forecast.days[1].date)
+            .assertIsDisplayed()
     }
 
     @Test
     fun currentScreen_forecastTab_secondButtonHasClick() {
         navigateToForecastTab()
-        composeTestRule.onNodeWithText(FakeDataSource.days[1].date).assertHasClickAction()
+        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.forecast.days[1].date)
+            .assertHasClickAction()
     }
 
 
     @Test
     fun currentScreen_forecastTab_thirdButtonDisplayed() {
         navigateToForecastTab()
-        composeTestRule.onNodeWithText(FakeDataSource.days[2].date).assertIsDisplayed()
+        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.forecast.days[2].date)
+            .assertIsDisplayed()
     }
 
     @Test
     fun currentScreen_forecastTab_thirdButtonHasClick() {
         navigateToForecastTab()
-        composeTestRule.onNodeWithText(FakeDataSource.days[2].date).assertHasClickAction()
+        composeTestRule.onNodeWithText(FakeDataSource.fakeWeatherInfo.forecast.days[2].date)
+            .assertHasClickAction()
     }
 
     private fun navigateToForecastTab() {

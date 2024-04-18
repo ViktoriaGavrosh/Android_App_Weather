@@ -26,8 +26,8 @@ class ForecastScreenMainCardTest {
     fun launchForecastScreen() {
         composeTestRule.setContent {
             ForecastScreen(
-                days = FakeDataSource.daysForForecastScreen,
-                dateSelectedDay = FakeDataSource.daysForForecastScreen[0].date,
+                days = FakeDataSource.fakeWeatherInfo.forecast.days,
+                dateSelectedDay = FakeDataSource.fakeWeatherInfo.forecast.days[0].date,
                 isCelsius = true,
                 onDetailsClick = {}
             )
@@ -49,66 +49,74 @@ class ForecastScreenMainCardTest {
     @Test
     fun forecastScreenMainCard_hour_dateDisplayed() {
         switchToHour()
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].time
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].time
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
     fun forecastScreenMainCard_hour_dateHasNoClick() {
         switchToHour()
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].time
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].time
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
 
     @Test
     fun forecastScreenMainCard_day_conditionDisplayed() {
-        val text = FakeDataSource.daysForForecastScreen[0].dayWeather.weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .dayWeather.weatherCondition.condition
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
     fun forecastScreenMainCard_day_conditionHasNoClick() {
-        val text = FakeDataSource.daysForForecastScreen[0].dayWeather.weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .dayWeather.weatherCondition.condition
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
 
     @Test
     fun forecastScreenMainCard_hour_conditionDisplayed() {
         switchToHour()
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .hours[0].weatherCondition.condition
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
     fun forecastScreenMainCard_hour_conditionHasNoClick() {
         switchToHour()
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .hours[0].weatherCondition.condition
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
 
     @Test
     fun forecastScreenMainCard_day_iconDisplayed() {
-        val text = FakeDataSource.daysForForecastScreen[0].dayWeather.weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .dayWeather.weatherCondition.condition
         composeTestRule.onNodeWithContentDescription(text).assertIsDisplayed()
     }
 
     @Test
     fun forecastScreenMainCard_day_iconHasNoClick() {
-        val text = FakeDataSource.daysForForecastScreen[0].dayWeather.weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .dayWeather.weatherCondition.condition
         composeTestRule.onNodeWithContentDescription(text).assertHasNoClickAction()
     }
 
     @Test
     fun forecastScreenMainCard_hour_iconDisplayed() {
         switchToHour()
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .hours[0].weatherCondition.condition
         composeTestRule.onNodeWithContentDescription(text).assertIsDisplayed()
     }
 
     @Test
     fun forecastScreenMainCard_hour_iconHasNoClick() {
         switchToHour()
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].weatherCondition.condition
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .hours[0].weatherCondition.condition
         composeTestRule.onNodeWithContentDescription(text).assertHasNoClickAction()
     }
 
@@ -116,7 +124,8 @@ class ForecastScreenMainCardTest {
     fun forecastScreenMainCard_day_humidityDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.humidity,
-            FakeDataSource.daysForForecastScreen[0].dayWeather.humidityPercent
+            FakeDataSource.fakeWeatherInfo.forecast.days[0]
+                .dayWeather.humidityPercent
         )
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
@@ -125,7 +134,7 @@ class ForecastScreenMainCardTest {
     fun forecastScreenMainCard_day_humidityHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.humidity,
-            FakeDataSource.daysForForecastScreen[0].dayWeather.humidityPercent
+            FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.humidityPercent
         )
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
@@ -135,7 +144,7 @@ class ForecastScreenMainCardTest {
         switchToHour()
         val text = composeTestRule.activity.getString(
             R.string.humidity,
-            FakeDataSource.daysForForecastScreen[0].hours[0].humidityPercent
+            FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].humidityPercent
         )
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
@@ -145,7 +154,7 @@ class ForecastScreenMainCardTest {
         switchToHour()
         val text = composeTestRule.activity.getString(
             R.string.humidity,
-            FakeDataSource.daysForForecastScreen[0].hours[0].humidityPercent
+            FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].humidityPercent
         )
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
@@ -170,7 +179,8 @@ class ForecastScreenMainCardTest {
     }
 
     private fun switchToHour() {
-        val text = FakeDataSource.daysForForecastScreen[0].hours[0].time.substringAfter(" ")
+        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0]
+            .hours[0].time.substringAfter(" ")
         composeTestRule.onNodeWithText(text).performClick()
     }
 

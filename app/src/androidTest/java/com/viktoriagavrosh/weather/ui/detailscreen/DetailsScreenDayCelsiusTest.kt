@@ -1,4 +1,4 @@
-package com.viktoriagavrosh.weather.ui.forecastscreen
+package com.viktoriagavrosh.weather.ui.detailscreen
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertHasNoClickAction
@@ -7,42 +7,41 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import com.viktoriagavrosh.weather.R
 import com.viktoriagavrosh.weather.fake.FakeDataSource
-import com.viktoriagavrosh.weather.ui.screens.ForecastScreen
+import com.viktoriagavrosh.weather.ui.screens.DetailsScreen
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class ForecastScreenCelsiusTest {
+class DetailsScreenDayCelsiusTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Before
-    fun launchForecastScreen() {
+    fun launchDetailScreen() {
         composeTestRule.setContent {
-            ForecastScreen(
-                days = FakeDataSource.fakeWeatherInfo.forecast.days,
+            DetailsScreen(
+                weatherInfo = FakeDataSource.fakeWeatherInfo,
                 dateSelectedDay = FakeDataSource.fakeWeatherInfo.forecast.days[0].date,
-                isCelsius = true,
-                onDetailsClick = {}
+                isCelsius = true
             )
         }
     }
 
     @Test
-    fun forecastScreen_celsius_tempDisplayed() {
+    fun detailsScreenDay_celsius_tempDisplayed() {
         val text = FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.tempC
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
     }
 
     @Test
-    fun forecastScreen_celsius_tempHasNoClick() {
+    fun detailsScreenDay_celsius_tempHasNoClick() {
         val text = FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.tempC
         composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
 
     @Test
-    fun forecastScreen_celsius_windDisplayed() {
+    fun detailsScreenDay_celsius_windDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.wind,
             FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.windSpeedKm
@@ -51,7 +50,7 @@ class ForecastScreenCelsiusTest {
     }
 
     @Test
-    fun forecastScreen_celsius_windHasNoClick() {
+    fun detailsScreenDay_celsius_windHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.wind,
             FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.windSpeedKm
@@ -60,7 +59,7 @@ class ForecastScreenCelsiusTest {
     }
 
     @Test
-    fun forecastScreen_celsius_precipitationDisplayed() {
+    fun detailsScreenDay_celsius_precipitationDisplayed() {
         val text = composeTestRule.activity.getString(
             R.string.precipitation,
             FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.precipitationMm
@@ -69,7 +68,7 @@ class ForecastScreenCelsiusTest {
     }
 
     @Test
-    fun forecastScreen_celsius_precipitationHasNoClick() {
+    fun detailsScreenDay_celsius_precipitationHasNoClick() {
         val text = composeTestRule.activity.getString(
             R.string.precipitation,
             FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.precipitationMm
@@ -78,8 +77,20 @@ class ForecastScreenCelsiusTest {
     }
 
     @Test
-    fun forecastScreenHourCard_celsius_tempDisplayed() {
-        val text = FakeDataSource.fakeWeatherInfo.forecast.days[0].hours[0].tempC
+    fun detailsScreenDay_celsius_visibilityDisplayed() {
+        val text = composeTestRule.activity.getString(
+            R.string.visibility,
+            FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.visibleKm
+        )
         composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun detailsScreenDay_celsius_visibilityHasNoClick() {
+        val text = composeTestRule.activity.getString(
+            R.string.visibility,
+            FakeDataSource.fakeWeatherInfo.forecast.days[0].dayWeather.visibleKm
+        )
+        composeTestRule.onNodeWithText(text).assertHasNoClickAction()
     }
 }

@@ -2,6 +2,12 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="DetailsScreenDayCelsiusTest">
+        <State />
+      </entry>
+      <entry key="DetailsScreenDayFahrenheitTest">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -18,19 +24,13 @@
           <timeTargetWasSelectedWithDropDown value="2024-04-07T15:17:35.882062100Z" />
         </State>
       </entry>
-      <entry key="forecastScreenMainCard_day_buttonNotDisplayed()">
+      <entry key="detailsScreenDay_astro_sunIconDisplayed()">
         <State />
       </entry>
-      <entry key="forecastScreen_celsius_tempDisplayed()">
+      <entry key="detailsScreenDay_astro_sunIconHasNoClick()">
         <State />
       </entry>
-      <entry key="forecastScreen_celsius_tempHasNoClick()">
-        <State />
-      </entry>
-      <entry key="forecastScreen_celsius_windDisplayed()">
-        <State />
-      </entry>
-      <entry key="forecastScreen_celsius_windHasNoClick()">
+      <entry key="detailsScreenDay_astro_sunriseIconDisplayed()">
         <State />
       </entry>
     </value>
