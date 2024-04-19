@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -183,7 +184,8 @@ private fun DayCard(
         ) {
             Text(
                 text = if (isDay) dateTime else (weather as Hour).time,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.testTag(stringResource(R.string.date_or_time))
             )
             WeatherCard(
                 condition = weather.weatherCondition.condition,
@@ -255,7 +257,10 @@ private fun HourCard(
                     .Builder(context = LocalContext.current)
                     .data(hour.weatherCondition.iconUri)
                     .build(),
-                contentDescription = hour.weatherCondition.condition,
+                contentDescription = stringResource(
+                    id = R.string.icon_description,
+                    hour.weatherCondition.condition
+                ),
                 error = painterResource(id = R.drawable.ic_broken_image),
                 placeholder = painterResource(id = R.drawable.ic_broken_image),
                 modifier = Modifier

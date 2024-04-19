@@ -32,4 +32,9 @@
     <string name="moon">Moon</string>
     <string name="rise">rise</string>
     <string name="set">set</string>
+    <string name="music_switch">Music switch</string>
+    <string name="date_or_time">date or time</string>
+    <string name="icon_description">Hour weather is %1s</string>
+    <string name="up">up</string>
+    <string name="down">down</string>
 </resources>

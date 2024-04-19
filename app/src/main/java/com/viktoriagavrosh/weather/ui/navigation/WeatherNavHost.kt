@@ -43,7 +43,9 @@ fun WeatherNavHost(
                         navController.navigate("${NavigationDestination.DetailsDestination.route}/{${date}}")     // {${it}} because if not -> FatalException
                     },
                     onForecastClick = { date ->
-                        navController.navigate("${NavigationDestination.ForecastDestination.route}/${date}")
+                        navController.navigate(
+                            "${NavigationDestination.ForecastDestination.route}/${date.ifEmpty { " " }}"
+                        )
                     },
                     weatherInfo = uiState,
                     city = uiState.location.cityName,
@@ -90,9 +92,9 @@ fun WeatherNavHost(
             }
             composable(route = NavigationDestination.SettingsDestination.route) {
                 SettingsScreen(
-                    isMusicState = isMusicState,
-                    isCelsiusState = isCelsiusState,
-                    wallpaperIdState = wallpaperIdState,
+                    isMusic = isMusicState.value,
+                    isCelsius = isCelsiusState.value,
+                    wallpaperId = wallpaperIdState.value,
                     onMusicClick = viewModel::changeMusic,
                     onCelsiusClick = viewModel::changeCelsius,
                     onWallpaperClick = viewModel::changeWallpaper,
